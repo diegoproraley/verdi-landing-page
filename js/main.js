@@ -527,6 +527,35 @@ function pintarCarrinho() {
  */
 let enderecoOk = false;      // o endereço no campo é utilizável?
 let relogioEndereco = null;  // atraso antes de trocar o rótulo
+let entregaAVista = false;   // o formulário de entrega está visível na tela?
+
+/**
+ * Rola até um elemento deixando-o inteiro à vista, abaixo do cabeçalho fixo.
+ * `scrollIntoView` sozinho encosta o topo na borda da janela e o cabeçalho
+ * come a primeira faixa do conteúdo — foi o que cortava a tela de entrega.
+ * Quando o elemento cabe na janela, ele é centralizado; quando não cabe,
+ * alinha o topo logo abaixo do cabeçalho, que é o que se pode ver de uma vez.
+ */
+function rolarAteVer(el) {
+  if (!el || typeof el.getBoundingClientRect !== 'function') return;
+  const topoLivre = alturaBarra() + 16;
+  const janela = window.innerHeight || 0;
+  const caixa = el.getBoundingClientRect();
+  const topoAbsoluto = caixa.top + (window.scrollY || 0);
+
+  const sobra = janela - topoLivre - caixa.height;
+  const alvo = sobra > 0
+    ? topoAbsoluto - topoLivre - sobra / 2   // cabe: centraliza no espaço útil
+    : topoAbsoluto - topoLivre;              // não cabe: encosta sob o cabeçalho
+
+  if (typeof window.scrollTo === 'function') {
+    try {
+      window.scrollTo({ top: Math.max(0, alvo), behavior: 'smooth' });
+    } catch (e) {
+      window.scrollTo(0, Math.max(0, alvo));
+    }
+  }
+}
 
 /** Endereço mínimo aceitável: duas palavras e alguma substância. */
 function enderecoValido() {
@@ -558,12 +587,13 @@ function pintarBarra(total, destacar) {
   if (!barra || !botao) return;
 
   /*
-   * No passo da entrega, "Fechar pedido" não leva a lugar nenhum — a pessoa
-   * já está na tela que ele abriria. A barra some enquanto o botão estaria
-   * nesse estado e volta assim que o endereço serve, aí valendo como
-   * "Enviar pedido no WhatsApp" ao alcance do polegar no celular.
+   * "Fechar pedido" só é inútil enquanto a tela de entrega está À VISTA — ali
+   * ele abriria a tela em que a pessoa já está. Se ela rolar de volta para o
+   * cardápio, o botão volta na hora, porque aí ele tem para onde levar.
+   * Quando o endereço serve, a barra reaparece como "Enviar pedido no
+   * WhatsApp" mesmo sobre o formulário, ao alcance do polegar.
    */
-  const inutilAqui = passoAtual === 2 && !enderecoOk;
+  const inutilAqui = passoAtual === 2 && entregaAVista && !enderecoOk;
   const tem = total > 0 && !inutilAqui;
   document.body.classList.toggle('com-barra', tem);
 
@@ -701,10 +731,8 @@ function irParaPasso(n, rolar) {
   pintarBarra(totalItens());
 
   if (rolar) {
-    const secao = $('#encomenda');
-    if (secao && typeof secao.scrollIntoView === 'function') {
-      secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // mira o painel em si, não a seção: é ele que precisa aparecer inteiro
+    rolarAteVer($(n === 2 ? '#painel-2' : '#painel-1') || $('#encomenda'));
   }
 }
 
@@ -894,6 +922,12 @@ function ligarInterface() {
       }
     });
   }
+
+  // "Editar" abre a lista para conferir, trocar quantidade ou tirar um item
+  const btnEditar = $('#barra-editar');
+  if (btnEditar) {
+    btnEditar.addEventListener('click', function () { irParaPasso(1, true); });
+  }
   /*
    * Cada tecla nos campos do cliente precisa reescrever OS DOIS links do
    * WhatsApp: o do formulário (#botao-zap, cuidado por pintarPrevia) e o da
@@ -932,6 +966,22 @@ function ligarInterface() {
       btn.setAttribute('aria-expanded', 'false');
     }
   });
+
+  /*
+   * Vigia se a tela de entrega está à vista. É isso que decide se
+   * "Fechar pedido" some (a pessoa já está lá) ou volta (ela rolou para o
+   * cardápio e precisa de um caminho de volta).
+   */
+  const painelEntrega = $('#painel-2');
+  if (painelEntrega && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        if (en.isIntersecting === entregaAVista) return;
+        entregaAVista = en.isIntersecting;
+        pintarBarra(totalItens());
+      });
+    }, { threshold: 0 }).observe(painelEntrega);
+  }
 
   // Cabeçalho e atalho flutuante
   const cabecalho = $('#cabecalho');
