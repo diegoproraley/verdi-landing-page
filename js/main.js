@@ -438,6 +438,18 @@ function totalItens() {
   return Object.keys(carrinho).reduce((t, id) => t + carrinho[id], 0);
 }
 
+/**
+ * O atalho flutuante "Montar pedido" só faz sentido antes de a pessoa
+ * começar a lista — depois disso a barra de pedido já cumpre esse papel,
+ * e os dois juntos na tela mais atrapalham do que ajudam.
+ */
+function atualizarFlutuante() {
+  const flutuante = $('#flutuante');
+  if (!flutuante) return;
+  const mostrar = window.scrollY > 700 && totalItens() === 0;
+  flutuante.classList.toggle('visivel', mostrar);
+}
+
 function pintarCarrinho() {
   const lista = $('#carrinho-itens');
   const vazio = $('#carrinho-vazio');
@@ -495,6 +507,7 @@ function pintarCarrinho() {
 
   pintarBarra(total);
   pintarPrevia();
+  atualizarFlutuante();
 }
 
 /**
@@ -705,6 +718,28 @@ function ligarPassos() {
     if (ir) { irParaPasso(Number(ir.dataset.ir), true); return; }
     if (e.target.closest('#ir-entrega')) irParaPasso(2, true);
   });
+
+  /*
+   * Qualquer "Fazer pedido" espalhado pela página (menu, cabeçalho, seções
+   * de prazos etc.) leva direto para a entrega e o contato — sem passar
+   * pela lista, que agora só se vê ao tocar em "Editar". Sem nenhum item
+   * escolhido ainda, não há o que entregar: manda para o cardápio.
+   * O botão da barra de pedido (barra-btn) tem seu próprio tratamento e
+   * fica de fora daqui.
+   */
+  document.addEventListener('click', function (e) {
+    const alvo = e.target.closest('a[href="#encomenda"]');
+    if (!alvo || alvo.id === 'barra-btn') return;
+    e.preventDefault();
+    if (totalItens() === 0) {
+      const cardapio = $('#produtos');
+      if (cardapio && typeof cardapio.scrollIntoView === 'function') {
+        cardapio.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+    irParaPasso(2, true);
+  });
 }
 
 /* ── Opções de entrega ──────────────────────────── */
@@ -877,13 +912,12 @@ function ligarInterface() {
 
   // Cabeçalho e atalho flutuante
   const cabecalho = $('#cabecalho');
-  const flutuante = $('#flutuante');
   let ticking = false;
 
   function aoRolar() {
     const y = window.scrollY;
     cabecalho.classList.toggle('encolhido', y > 40);
-    if (flutuante) flutuante.classList.toggle('visivel', y > 700);
+    atualizarFlutuante();
     seguirRolagem();
     ticking = false;
   }
