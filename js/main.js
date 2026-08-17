@@ -548,12 +548,20 @@ function rolarAteVer(el) {
     ? topoAbsoluto - topoLivre - sobra / 2   // cabe: centraliza no espaço útil
     : topoAbsoluto - topoLivre;              // não cabe: encosta sob o cabeçalho
 
-  if (typeof window.scrollTo === 'function') {
-    try {
-      window.scrollTo({ top: Math.max(0, alvo), behavior: 'smooth' });
-    } catch (e) {
-      window.scrollTo(0, Math.max(0, alvo));
-    }
+  const destino = Math.max(0, alvo);
+  if (typeof window.scrollTo !== 'function') return;
+
+  /*
+   * Quem pediu "reduzir movimento" no sistema recebe o salto direto — a folha
+   * de estilo já desliga o `scroll-behavior:smooth` nesse caso, e forçar a
+   * animação aqui passaria por cima da escolha da pessoa.
+   */
+  const suave = !(window.matchMedia &&
+                  window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  try {
+    window.scrollTo({ top: destino, behavior: suave ? 'smooth' : 'auto' });
+  } catch (e) {
+    window.scrollTo(0, destino);   // navegadores antigos: só a forma numérica
   }
 }
 
