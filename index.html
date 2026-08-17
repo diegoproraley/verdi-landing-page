@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verdi — Cultivando saúde, simplificando a vida</title>
+<meta name="description" content="Saladas higienizadas, legumes cortados e blends de frutas congeladas, preparados sob encomenda. Entrega em Porto Velho (RO): peça até as 16h e receba no dia seguinte.">
+<meta name="theme-color" content="#22400A">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Verdi — Cultivando saúde, simplificando a vida">
+<meta property="og:description" content="Alimentos frescos e minimamente processados, preparados sob encomenda. Você abre a embalagem e a comida já está pronta.">
+<meta property="og:image" content="img/og-verdi.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400;12..96,75..100,600;12..96,75..100,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/icone-ios.png">
+</head>
+<body>
+
+<a class="pular" href="#produtos">Pular para o cardápio</a>
+
+<!-- ══════════ CABEÇALHO ══════════ -->
+<header class="cabecalho" id="cabecalho">
+  <div class="env cabecalho__int">
+    <a class="marca" href="#topo" aria-label="Verdi — início">
+      <img class="marca__logo" src="img/logo-verdi-sm.jpg" alt="Verdi" width="320" height="321">
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Navegação principal">
+      <a href="#sobre">A Verdi</a>
+      <a href="#produtos">Cardápio</a>
+      <a href="#beneficios">Por que encomendar</a>
+      <a href="#como-pedir">Como pedir</a>
+      <a href="#prazos">Prazos</a>
+      <a class="btn btn--verde nav__cta" href="#encomenda">Fazer pedido</a>
+    </nav>
+
+    <a class="btn btn--pequeno btn--verde cabecalho__cta" href="#encomenda">Fazer pedido</a>
+
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="topo">
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="env hero__grade">
+
+    <div class="hero__texto">
+      <p class="sobrenome">Sob encomenda · Delivery em Porto Velho (RO) · Pedido hoje, entrega amanhã</p>
+
+      <h1 class="hero__titulo">
+        Cultivando saúde,<br>
+        <em>simplificando</em> a vida.
+      </h1>
+
+      <p class="hero__sub">
+        Saladas higienizadas, legumes cortados, kits de receita e blends de frutas
+        congeladas. Você abre a embalagem e a comida já está pronta para a panela —
+        ou direto para o prato.
+      </p>
+
+      <div class="hero__acoes">
+        <a class="btn btn--verde" href="#encomenda">Montar minha encomenda</a>
+        <a class="btn btn--vazado" href="#produtos">Ver o cardápio</a>
+      </div>
+
+      <ul class="hero__selos">
+        <li>Sem conservantes</li>
+        <li>Embalado a vácuo</li>
+        <li>Entrega em Porto Velho (RO)</li>
+        <li>Sem água nem açúcar nos blends</li>
+        <li>Porções na medida</li>
+      </ul>
+    </div>
+
+    <div class="hero__visual">
+      <figure class="foto foto--alta">
+        <img src="img/hero-salada.jpg"
+             srcset="img/hero-salada-sm.jpg 500w, img/hero-salada.jpg 1000w"
+             sizes="(max-width:1000px) 92vw, 45vw"
+             alt="Pote de salada Verdi com couve fatiada, tomate e pepino em rodelas" width="1000" height="1250" fetchpriority="high">
+      </figure>
+
+      <figure class="foto foto--redonda">
+        <img src="img/hero-blend.jpg"
+             srcset="img/hero-blend-sm.jpg 400w, img/hero-blend.jpg 800w"
+             sizes="(max-width:1000px) 34vw, 20vw"
+             alt="Blend de morango, pitaya e maracujá congelado em pedaços" width="800" height="800">
+      </figure>
+
+      <!-- SIGNATURE: painel do próximo lote, calculado ao vivo -->
+      <aside class="lote" aria-live="polite">
+        <p class="lote__rotulo">Próxima entrega</p>
+        <p class="lote__data" id="lote-data">—</p>
+        <div class="lote__linha">
+          <span>Pedidos até</span>
+          <strong id="lote-limite">—</strong>
+        </div>
+        <div class="lote__barra" role="img" aria-label="Tempo restante para pedir">
+          <span id="lote-barra"></span>
+        </div>
+        <p class="lote__resta" id="lote-resta">Calculando janela de pedidos…</p>
+      </aside>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ TARJA ══════════ -->
+<div class="tarja" aria-hidden="true">
+  <div class="tarja__trilho">
+    <span>Folhas higienizadas</span><i>◆</i>
+    <span>Legumes a vácuo</span><i>◆</i>
+    <span>Raízes descascadas</span><i>◆</i>
+    <span>Blends de frutas congeladas</span><i>◆</i>
+    <span>Pediu hoje, chega amanhã</span><i>◆</i>
+    <span>Folhas higienizadas</span><i>◆</i>
+    <span>Legumes a vácuo</span><i>◆</i>
+    <span>Raízes descascadas</span><i>◆</i>
+    <span>Blends de frutas congeladas</span><i>◆</i>
+    <span>Pediu hoje, chega amanhã</span><i>◆</i>
+  </div>
+</div>
+
+<!-- ══════════ SOBRE ══════════ -->
+<section class="secao sobre" id="sobre">
+  <div class="env sobre__grade">
+
+    <figure class="foto foto--larga revelar">
+      <img src="img/sobre-bancada.jpg"
+           srcset="img/sobre-bancada-sm.jpg 600w, img/sobre-bancada.jpg 1200w"
+           sizes="(max-width:1000px) 92vw, 45vw"
+           alt="Pacote a vácuo de cenoura e pimentão em cubinhos sobre a bancada de preparo" width="1200" height="1000" loading="lazy">
+      <figcaption>Cortado e embalado no dia da entrega.</figcaption>
+    </figure>
+
+    <div class="sobre__texto revelar">
+      <p class="sobrenome">A Verdi</p>
+      <h2 class="titulo">A parte chata da comida saudável a gente já fez.</h2>
+
+      <p>
+        A Verdi é uma empresa de alimentos frescos e minimamente processados,
+        criada para tornar a alimentação saudável mais prática no dia a dia.
+        Trabalhamos por encomenda: saladas higienizadas e prontas para consumo,
+        legumes selecionados e cortados para o preparo, kits de receitas e blends
+        de frutas congeladas para sucos e vitaminas — sem adição de água ou açúcar.
+      </p>
+
+      <p>
+        Nosso propósito é economizar o seu tempo sem abrir mão do frescor, do sabor
+        e da qualidade dos alimentos. Cada produto sai daqui em porções práticas,
+        pensado para encurtar o caminho entre a geladeira e a mesa.
+      </p>
+
+      <blockquote class="lema">
+        Cultivando saúde, simplificando a vida.
+      </blockquote>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ PRODUTOS ══════════ -->
+<section class="secao secao--creme" id="produtos">
+  <div class="env">
+    <header class="secao__topo revelar">
+      <p class="sobrenome">Cardápio</p>
+      <h2 class="titulo">Escolha o que vai poupar seu tempo</h2>
+      <p class="secao__lead">
+        <span id="cardapio-total">—</span> preparados sob encomenda. Toque em
+        <strong>+</strong> para montar sua lista: ela vai somando o subtotal e
+        vira a mensagem do WhatsApp no fim da página.
+      </p>
+    </header>
+
+    <div class="cardapio revelar">
+      <div class="cardapio__abas" role="tablist" aria-label="Categorias do cardápio" id="cardapio-abas"></div>
+      <p class="cardapio__resumo" id="cardapio-resumo"></p>
+      <div class="cardapio__lista" id="cardapio-lista"></div>
+    </div>
+
+    <p class="produtos__nota revelar">
+      Precisa de outro corte, outro peso ou outra combinação de fruta?
+      Fazemos sob medida — é só descrever no pedido. Os valores acima são
+      confirmados no WhatsApp junto com a taxa de entrega.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════ BENEFÍCIOS ══════════ -->
+<section class="secao secao--escura" id="beneficios">
+  <div class="env">
+    <header class="secao__topo secao__topo--claro revelar">
+      <p class="sobrenome sobrenome--claro">Por que encomendar</p>
+      <h2 class="titulo titulo--claro">Comprar pronto é rápido. Comprar fresco é melhor.<br>Aqui dá para ter os dois.</h2>
+    </header>
+
+    <ul class="beneficios">
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>
+        <h3>A pia livre no fim do dia</h3>
+        <p>Lavar folha por folha, descascar e picar já foi feito. Sobra o preparo — a parte gostosa.</p>
+      </li>
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4c0 8.5-4.7 13.5-11 13.5C8 9 12.7 4 19 4Z"/><path d="M6 21c1.4-5 4.2-8.7 8.2-11.4"/></svg>
+        <h3>Frescor de quem não estoca</h3>
+        <p>Sua encomenda é higienizada, cortada e embalada no mesmo dia em que sai para entrega.</p>
+      </li>
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M6.5 7v11.5a1.6 1.6 0 0 0 1.6 1.6h7.8a1.6 1.6 0 0 0 1.6-1.6V7"/><path d="M9.4 7V4.8h5.2V7"/></svg>
+        <h3>Nada apodrece na gaveta</h3>
+        <p>Você pede a quantidade que vai usar. Sem meio pé de alface esquecido no fundo da geladeira.</p>
+      </li>
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="M12 8 6.8 5M12 8l5.2-3M12 16l-5.2 3M12 16l5.2 3"/><path d="M4 12h16"/></svg>
+        <h3>Higienização com processo</h3>
+        <p>Lavagem em etapas, sanitização, secagem e embalagem — o mesmo padrão de uma cozinha profissional.</p>
+      </li>
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="13" rx="2.2"/><path d="M8 6V4.2M16 6V4.2M4 10.4h16"/></svg>
+        <h3>Entrega todo dia de semana</h3>
+        <p>Pediu até as 16h, chega no dia seguinte — de segunda a sexta, na sua porta. Sem passar no mercado no caminho.</p>
+      </li>
+      <li class="beneficio revelar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5c2.4 3 3.6 5.4 3.6 7.2a3.6 3.6 0 0 1-7.2 0c0-1.8 1.2-4.2 3.6-7.2Z"/><path d="M6.4 14.5c-.9 1.3-1.4 2.4-1.4 3.2a2 2 0 0 0 4 0c0-.8-.5-1.9-1.4-3.2ZM17.6 14.5c-.9 1.3-1.4 2.4-1.4 3.2a2 2 0 0 0 4 0c0-.8-.5-1.9-1.4-3.2Z"/></svg>
+        <h3>Fruta é só fruta</h3>
+        <p>Os blends são congelados em pedaços, sem água, sem açúcar e sem conservantes. Bateu, está pronto.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ COMO PEDIR ══════════ -->
+<section class="secao" id="como-pedir">
+  <div class="env">
+    <header class="secao__topo revelar">
+      <p class="sobrenome">Como fazer o pedido</p>
+      <h2 class="titulo">Quatro passos, uma conversa</h2>
+    </header>
+
+    <ol class="passos">
+      <li class="passo revelar">
+        <span class="passo__num">1</span>
+        <h3>Monte a lista</h3>
+        <p>Escolha os produtos aqui na página ou mande a lista no WhatsApp. Atendemos de segunda a sexta, das 8h às 16h.</p>
+      </li>
+      <li class="passo revelar">
+        <span class="passo__num">2</span>
+        <h3>Confirme com a gente</h3>
+        <p>Respondemos com o valor dos produtos, a taxa de entrega do seu bairro, a data e as formas de pagamento (PIX, cartão ou dinheiro).</p>
+      </li>
+      <li class="passo revelar">
+        <span class="passo__num">3</span>
+        <h3>Preparamos no dia da entrega</h3>
+        <p>Selecionamos, higienizamos, cortamos e embalamos a sua encomenda pela manhã, poucas horas antes de sair.</p>
+      </li>
+      <li class="passo revelar">
+        <span class="passo__num">4</span>
+        <h3>Receba no dia seguinte</h3>
+        <p>Trabalhamos só com delivery: entrega refrigerada no seu endereço, no dia útil seguinte ao pedido.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ PRAZOS ══════════ -->
+<section class="secao secao--creme" id="prazos">
+  <div class="env prazos__grade">
+
+    <div class="prazos__texto revelar">
+      <p class="sobrenome">Prazo de encomenda</p>
+      <h2 class="titulo">Pediu hoje, chega amanhã</h2>
+      <p>
+        A Verdi não trabalha com estoque. Nada fica pronto esperando comprador:
+        cada encomenda é comprada, higienizada e cortada depois que você pede.
+        É esse intervalo de um dia que garante o frescor que você sente ao abrir
+        a embalagem.
+      </p>
+      <p class="prazos__regra">
+        <strong>Regra simples:</strong> peça <strong>até as 16h</strong> e receba
+        no dia seguinte. Atendemos de segunda a sexta, <strong>só por delivery
+        e apenas em Porto Velho (RO)</strong>.
+      </p>
+      <a class="btn btn--verde" href="#encomenda">Reservar a próxima entrega</a>
+    </div>
+
+    <div class="quadro revelar">
+      <div class="quadro__topo">
+        <span>Pedidos das 8h às 16h</span>
+        <span id="quadro-semana">—</span>
+      </div>
+      <table class="quadro__tabela">
+        <caption class="oculto">Dia do pedido e dia da entrega correspondente</caption>
+        <thead>
+          <tr><th scope="col">Você pede</th><th scope="col">Recebe</th></tr>
+        </thead>
+        <tbody id="quadro-corpo">
+          <tr data-dia="1"><td>Segunda, até 16h</td><td>Terça</td></tr>
+          <tr data-dia="2"><td>Terça, até 16h</td><td>Quarta</td></tr>
+          <tr data-dia="3"><td>Quarta, até 16h</td><td>Quinta</td></tr>
+          <tr data-dia="4"><td>Quinta, até 16h</td><td>Sexta</td></tr>
+          <tr data-dia="5"><td>Sexta, até 16h</td><td>Segunda</td></tr>
+        </tbody>
+      </table>
+      <p class="quadro__rodape">
+        Pedido depois das 16h entra no dia seguinte. Não trabalhamos no fim de
+        semana: o que for pedido de sexta à tarde em diante sai na terça.
+        <span class="quadro__fuso" id="quadro-fuso" hidden></span>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ ENCOMENDA — DOIS PASSOS ══════════ -->
+<section class="secao encomenda" id="encomenda">
+  <div class="env">
+
+    <header class="secao__topo secao__topo--claro revelar">
+      <p class="sobrenome sobrenome--claro">Fechar pedido</p>
+      <h2 class="titulo titulo--claro">Dois passos e sua lista vira mensagem</h2>
+      <p class="secao__lead">
+        Nada é cobrado aqui: o subtotal é uma prévia, e o total com a taxa de
+        entrega a gente fecha na conversa.
+      </p>
+    </header>
+
+    <ol class="trilha" id="trilha">
+      <li class="trilha__passo ativo" data-passo="1">
+        <button type="button" data-ir="1"><span class="trilha__num">1</span> Sua lista</button>
+      </li>
+      <li class="trilha__passo" data-passo="2">
+        <button type="button" data-ir="2"><span class="trilha__num">2</span> Entrega e contato</button>
+      </li>
+    </ol>
+
+    <!-- ── Passo 1: os itens ── -->
+    <div class="painel" id="painel-1">
+      <div class="carrinho">
+        <div class="carrinho__topo">
+          <h3>Sua lista</h3>
+          <button class="carrinho__limpar" id="limpar" type="button">Limpar</button>
+        </div>
+
+        <p class="carrinho__restaurado" id="carrinho-restaurado" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4.4l3 1.8"/><path d="M3.6 12a8.4 8.4 0 1 0 2.5-6"/><path d="M3.4 5.2V10h4.8"/></svg>
+          <span>Retomamos a lista que você montou por aqui. Os preços são os de hoje.</span>
+        </p>
+
+        <ul class="carrinho__itens" id="carrinho-itens"></ul>
+
+        <p class="carrinho__vazio" id="carrinho-vazio">
+          Sua lista está vazia. Escolha itens no cardápio acima ou toque em um dos atalhos.
+        </p>
+
+        <div class="carrinho__soma" id="carrinho-soma" hidden>
+          <div class="carrinho__linha">
+            <span>Subtotal dos produtos</span>
+            <strong id="carrinho-subtotal">R$ 0,00</strong>
+          </div>
+          <div class="carrinho__linha carrinho__linha--suave">
+            <span>Taxa de entrega</span>
+            <strong>a combinar</strong>
+          </div>
+        </div>
+
+        <p class="atalhos__rotulo">Ou comece por um combo</p>
+        <div class="atalhos" id="atalhos"></div>
+
+        <div class="painel__acoes">
+          <a class="btn btn--vazado btn--claro" href="#produtos">Voltar ao cardápio</a>
+          <button class="btn btn--broto" id="ir-entrega" type="button">
+            Continuar para a entrega
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Depois do envio ── -->
+    <div class="painel painel--enviado" id="painel-enviado" hidden>
+      <div class="enviado">
+        <span class="enviado__marca" aria-hidden="true"></span>
+        <h3 class="enviado__titulo">Pedido enviado</h3>
+        <p class="enviado__texto">
+          Abrimos o WhatsApp com a sua lista escrita. <strong>Toque em enviar
+          na conversa</strong> — o pedido só chega à Verdi depois disso. A gente
+          responde com o total, a taxa de entrega e a forma de pagamento.
+        </p>
+        <div class="enviado__acoes">
+          <a class="btn btn--zap" id="reenviar" href="#" target="_blank" rel="noopener">
+            A conversa não abriu? Tentar de novo
+          </a>
+          <button class="btn btn--vazado btn--claro" id="novo-pedido" type="button">Montar outro pedido</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Passo 2: entrega e contato ── -->
+    <div class="painel painel--duplo" id="painel-2" hidden>
+
+      <div class="painel__campos">
+        <div class="entrega-opcoes" role="group" aria-label="Escolha a entrega">
+          <p class="campo__rotulo">Entrega desejada</p>
+          <div class="entrega-opcoes__lista" id="entrega-opcoes"></div>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="cliente-nome">Seu nome</label>
+          <input class="campo__entrada" type="text" id="cliente-nome" placeholder="Como devemos te chamar?" autocomplete="name">
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="cliente-endereco">Endereço de entrega</label>
+          <textarea class="campo__entrada" id="cliente-endereco" rows="2" placeholder="Rua, número, bairro e um ponto de referência — Porto Velho (RO)" autocomplete="street-address"></textarea>
+          <p class="campo__dica">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <span>Entregamos <strong>só em Porto Velho (RO)</strong>. A taxa de entrega é <strong>a combinar</strong> — confirmamos o valor no WhatsApp assim que soubermos o seu bairro.</span>
+          </p>
+        </div>
+
+        <div class="campo">
+          <label class="campo__rotulo" for="cliente-obs">Observações</label>
+          <textarea class="campo__entrada" id="cliente-obs" rows="2" placeholder="Ex.: cenoura em rodelas finas, entregar depois das 18h"></textarea>
+        </div>
+      </div>
+
+      <aside class="conferencia">
+        <div class="conferencia__resumo">
+          <div>
+            <p class="conferencia__rotulo">Sua lista</p>
+            <p class="conferencia__valor" id="resumo-itens">—</p>
+          </div>
+          <button class="conferencia__editar" type="button" data-ir="1">Editar</button>
+        </div>
+
+        <div class="previa">
+          <p class="previa__rotulo">Mensagem que será enviada</p>
+          <pre class="previa__texto" id="previa-texto"></pre>
+        </div>
+
+        <a class="btn btn--zap" id="botao-zap" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2A9.9 9.9 0 0 0 2.1 11.9c0 1.75.46 3.46 1.34 4.97L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01a9.9 9.9 0 0 0 9.94-9.9A9.9 9.9 0 0 0 12.04 2Zm5.8 14.06c-.24.69-1.42 1.32-1.96 1.37-.5.05-.98.23-3.3-.69-2.78-1.1-4.55-3.94-4.69-4.12-.14-.19-1.12-1.5-1.12-2.85 0-1.36.71-2.02.96-2.3.25-.27.55-.34.73-.34.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.55.8 1.9.87 2.04.07.14.12.3.02.49-.1.18-.15.3-.29.46-.14.16-.3.36-.43.49-.14.14-.29.29-.13.57.17.27.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.61-.07.16-.19.7-.82.88-1.1.19-.28.37-.23.62-.14.25.09 1.6.75 1.87.89.28.13.46.2.53.31.07.11.07.65-.17 1.34Z"/></svg>
+          Enviar pedido no WhatsApp
+        </a>
+
+        <p class="carrinho__nota">
+          Abre uma conversa com a Verdi já com a lista e o endereço escritos.
+          Você ainda pode editar tudo antes de mandar.
+        </p>
+      </aside>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ FAIXA FINAL ══════════ -->
+<section class="faixa">
+  <img class="faixa__foto" src="img/faixa-entrega.jpg"
+       srcset="img/faixa-entrega-sm.jpg 800w, img/faixa-entrega.jpg 1600w"
+       sizes="100vw"
+       alt="Pacotes de folhas higienizadas da Verdi prontos para entrega" loading="lazy">
+  <div class="faixa__conteudo env">
+    <h2 class="faixa__titulo">Peça até as 16h e amanhã já está na sua porta,<br>em qualquer bairro de Porto Velho.</h2>
+    <a class="btn btn--verde" href="#encomenda">Fazer meu pedido</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ RODAPÉ ══════════ -->
+<footer class="rodape">
+  <div class="env rodape__grade">
+
+    <div class="rodape__marca">
+      <a class="selo" href="#topo" aria-label="Verdi — início">
+        <img src="img/logo-verdi-sm.jpg"
+             srcset="img/logo-verdi-sm.jpg 320w, img/logo-verdi.jpg 720w"
+             sizes="200px"
+             alt="Verdi — fresh drinks e cozinha" width="320" height="321" loading="lazy">
+      </a>
+      <p class="rodape__lema">Cultivando saúde, simplificando a vida.</p>
+    </div>
+
+    <div class="rodape__bloco">
+      <h3>Navegar</h3>
+      <a href="#sobre">A Verdi</a>
+      <a href="#produtos">Cardápio</a>
+      <a href="#como-pedir">Como pedir</a>
+      <a href="#prazos">Prazos de encomenda</a>
+    </div>
+
+    <div class="rodape__bloco">
+      <h3>Falar com a gente</h3>
+      <a id="rodape-zap" href="#" target="_blank" rel="noopener">
+        Ajuda e suporte
+        <span>WhatsApp (69) 99299-9008</span>
+      </a>
+      <a href="https://www.instagram.com/verdi.fv" target="_blank" rel="noopener">Instagram @verdi.fv</a>
+    </div>
+
+    <div class="rodape__bloco">
+      <h3>Atendimento</h3>
+      <p>Pedidos: segunda a sexta, 8h às 16h</p>
+      <p>Entrega: no dia útil seguinte ao pedido</p>
+      <p>Somente delivery — não temos loja física</p>
+      <p>Entregamos apenas em Porto Velho (RO)</p>
+      <p>Horários no fuso de Rondônia (UTC−4)</p>
+    </div>
+
+  </div>
+
+  <div class="env rodape__base">
+    <p>© <span id="ano">2026</span> Verdi Alimentos Frescos. Todos os direitos reservados.</p>
+    <p>Alimentos frescos e minimamente processados · Produção sob encomenda</p>
+  </div>
+</footer>
+
+<div class="barra-pedido" id="barra-pedido" hidden>
+  <div class="barra-pedido__info">
+    <strong id="barra-qtd">0 itens</strong>
+    <span id="barra-entrega">—</span>
+  </div>
+  <a class="barra-pedido__btn" id="barra-btn" href="#encomenda" aria-live="polite"><svg class="barra-pedido__zap" viewBox="0 0 24 24" width="18" height="18" fill="#FFFFFF" aria-hidden="true" focusable="false"><path d="M12.04 2A9.9 9.9 0 0 0 2.1 11.9c0 1.75.46 3.46 1.34 4.97L2 22l5.28-1.38a9.9 9.9 0 0 0 4.76 1.21h.01a9.9 9.9 0 0 0 9.94-9.9A9.9 9.9 0 0 0 12.04 2Zm5.8 14.06c-.24.69-1.42 1.32-1.96 1.37-.5.05-.98.23-3.3-.69-2.78-1.1-4.55-3.94-4.69-4.12-.14-.19-1.12-1.5-1.12-2.85 0-1.36.71-2.02.96-2.3.25-.27.55-.34.73-.34.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.55.8 1.9.87 2.04.07.14.12.3.02.49-.1.18-.15.3-.29.46-.14.16-.3.36-.43.49-.14.14-.29.29-.13.57.17.27.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.61-.07.16-.19.7-.82.88-1.1.19-.28.37-.23.62-.14.25.09 1.6.75 1.87.89.28.13.46.2.53.31.07.11.07.65-.17 1.34Z"/></svg><span id="barra-btn-texto">Fechar pedido</span></a>
+</div>
+
+<div class="flutuante" id="flutuante">
+  <a class="atalho-cardapio" id="atalho-cardapio" href="#produtos">
+    <svg class="atalho-cardapio__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="18.5" cy="18" r="3.2" fill="currentColor"/><path d="M18.5 16.6v2.8M17.1 18h2.8" stroke="#22400A" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span class="atalho-cardapio__texto">Montar pedido</span>
+    <span class="atalho-cardapio__cont" id="zap-cont" hidden>0</span>
+  </a>
+</div>
+
+<script src="js/cardapio.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
