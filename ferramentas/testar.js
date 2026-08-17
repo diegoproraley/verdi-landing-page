@@ -34,18 +34,37 @@ const dom = new JSDOM(html, {
 const { window } = dom;
 const doc = window.document;
 
-// jsdom não tem IntersectionObserver nem matchMedia completos
+/*
+ * jsdom não tem IntersectionObserver. O dublê avisa "está à vista" ao observar
+ * e guarda os observadores, para os testes poderem simular a pessoa rolando a
+ * página — é assim que se verifica a barra sumindo e voltando.
+ */
+window.__observadores = [];
 window.IntersectionObserver = class {
-  constructor(cb) { this.cb = cb; }
-  observe(el) { this.cb([{ isIntersecting: true, target: el }], this); }
+  constructor(cb) { this.cb = cb; this.alvos = []; window.__observadores.push(this); }
+  observe(el) { this.alvos.push(el); this.cb([{ isIntersecting: true, target: el }], this); }
   unobserve() {}
   disconnect() {}
+  disparar(visivel) {
+    this.cb(this.alvos.map(el => ({ isIntersecting: visivel, target: el })), this);
+  }
 };
+function avisarEntrega(visivel) {
+  window.__observadores
+    .filter(o => o.alvos.some(el => el && el.id === 'painel-2'))
+    .forEach(o => o.disparar(visivel));
+}
+window.__saiuDaTela = () => avisarEntrega(false);
+window.__voltouParaTela = () => avisarEntrega(true);
 // força "movimento reduzido" para o chatbot responder sem esperas
 window.matchMedia = q => ({ matches: /reduce/.test(q), addListener() {}, removeListener() {} });
 window.requestAnimationFrame = cb => setTimeout(cb, 0);
 // jsdom não implementa rolagem; em navegador isso existe
 window.Element.prototype.scrollIntoView = function () {};
+window.scrollTo = function (x, y) {
+  // guarda o alvo para os testes poderem conferir para onde a página rolaria
+  window.__ultimoScroll = (x && typeof x === 'object') ? x : { top: y };
+};
 
 // injeta os scripts manualmente (jsdom não busca arquivos locais por src relativo)
 for (const arquivo of ['js/cardapio.js', 'js/main.js']) {
@@ -317,9 +336,39 @@ async function cicloDaBarra() {
   await esperar(900);
   checar('endereço incompleto recolhe a barra no passo da entrega', !barraAberta());
 
+  /*
+   * ...mas se a pessoa rolar de volta para o cardápio, "Fechar pedido" volta:
+   * ali ele tem para onde levar. Quem avisa é o IntersectionObserver do
+   * painel de entrega, então basta simular que ele saiu da tela.
+   */
+  window.__saiuDaTela();
+  await esperar(50);
+  checar('rolando para longe da entrega, "Fechar pedido" volta com itens na lista',
+    barraAberta() && rotulo() === 'Fechar pedido', rotulo());
+  window.__voltouParaTela();
+  await esperar(50);
+  checar('voltando para a entrega, ele se recolhe de novo', !barraAberta());
+
   endereco.value = 'Rua das Palmeiras, 120 — Centro';
   endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
   await esperar(900);
+
+  // "Editar" leva de volta à lista, para conferir ou tirar um item
+  checar('barra tem o atalho "Editar"',
+    !!$('#barra-editar') && $('#barra-editar').textContent.trim() === 'Editar');
+  $('#barra-editar').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  checar('"Editar" abre a lista com os produtos escolhidos',
+    !$('#painel-1').hidden && $('#painel-2').hidden &&
+    $$('#carrinho-itens .carrinho__item').length > 0,
+    $$('#carrinho-itens .carrinho__item').length + ' item(ns) à mostra');
+
+  // a rolagem mira o painel e desconta o cabeçalho, senão a tela chega cortada
+  window.__ultimoScroll = null;
+  irParaPasso2();
+  checar('ao fechar o pedido a página rola para posicionar o painel inteiro',
+    !!window.__ultimoScroll && typeof window.__ultimoScroll.top === 'number',
+    JSON.stringify(window.__ultimoScroll));
+  await esperar(1400);
 
   /*
    * O endereço tem de chegar INTEIRO no WhatsApp, dos dois botões.
