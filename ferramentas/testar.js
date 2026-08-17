@@ -299,6 +299,37 @@ async function cicloDaBarra() {
   endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
   await esperar(900);
 
+  /*
+   * O endereço tem de chegar INTEIRO no WhatsApp, dos dois botões.
+   * Regressão real: o link da barra congelava assim que o endereço virava
+   * "válido" (duas palavras bastavam), então quem digitava a rua e só depois
+   * completava número/bairro/referência enviava apenas a rua.
+   */
+  const completo = 'Avenida Calama, 7773 — Residencial Aquarius, Casa 3, perto da praça';
+  endereco.value = 'Avenida Calama';                       // vira "válido" já aqui
+  endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
+  await esperar(900);
+  endereco.value = completo;                                // pessoa termina de digitar
+  endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
+  await esperar(900);
+
+  const soEndereco = t => (decodeURIComponent(t).match(/\*Endereço:\* ([^\n]*)/) || [])[1];
+  checar('barra do celular envia o endereço completo',
+    soEndereco(btn.href) === completo, soEndereco(btn.href));
+  checar('botão do formulário envia o endereço completo',
+    soEndereco($('#botao-zap').href) === completo, soEndereco($('#botao-zap').href));
+
+  // nome e observações digitados depois também precisam entrar no link da barra
+  $('#cliente-nome').value = 'Diego Matias';
+  $('#cliente-nome').dispatchEvent(new window.Event('input', { bubbles: true }));
+  $('#cliente-obs').value = 'Cenoura em rodelas finas';
+  $('#cliente-obs').dispatchEvent(new window.Event('input', { bubbles: true }));
+  await esperar(50);
+  const msgBarra = decodeURIComponent(btn.href);
+  checar('nome digitado depois entra no link da barra', msgBarra.includes('*Nome:* Diego Matias'));
+  checar('observações digitadas depois entram no link da barra',
+    msgBarra.includes('Cenoura em rodelas finas'));
+
   await listaGuardada();
   await envioLimpaTudo();
   fim();
