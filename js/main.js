@@ -884,9 +884,22 @@ function ligarInterface() {
       }
     });
   }
+  /*
+   * Cada tecla nos campos do cliente precisa reescrever OS DOIS links do
+   * WhatsApp: o do formulário (#botao-zap, cuidado por pintarPrevia) e o da
+   * barra fixa (#barra-btn, montado dentro de pintarBarra).
+   *
+   * Sem o pintarBarra aqui, o link da barra congelava no instante em que o
+   * endereço passava a ser "válido" — bastavam duas palavras. Quem digitava
+   * "Avenida Calama" e só depois completava com número, bairro e referência
+   * mandava para a Verdi apenas "Avenida Calama".
+   */
   ['#cliente-nome', '#cliente-endereco', '#cliente-obs'].forEach(function (sel) {
     const campo = $(sel);
-    if (campo) campo.addEventListener('input', pintarPrevia);
+    if (campo) campo.addEventListener('input', function () {
+      pintarPrevia();
+      pintarBarra(totalItens());
+    });
   });
 
   const endereco = $('#cliente-endereco');
