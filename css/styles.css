@@ -1176,8 +1176,27 @@ body.com-barra .rodape{padding-bottom:6rem}
   font-family:var(--mono);font-size:.7rem;color:var(--verde-claro);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
-.barra-pedido__btn{
+/* Atalho discreto para rever a lista: existe para quem quer conferir ou tirar
+   um item, sem competir com a ação principal ao lado. */
+.barra-pedido__editar{
   margin-left:auto;flex:none;
+  background:transparent;
+  border:1px solid rgba(255,255,255,.28);
+  color:rgba(255,255,255,.82);
+  font-family:var(--corpo);font-size:.85rem;font-weight:500;
+  padding:.55rem .95rem;border-radius:999px;
+  min-height:40px;cursor:pointer;
+  transition:background var(--transicao),border-color var(--transicao),
+             color var(--transicao);
+}
+.barra-pedido__editar:hover{
+  background:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.5);
+  color:var(--branco);
+}
+
+.barra-pedido__btn{
+  flex:none;
   background:var(--verde-broto);color:var(--verde-noite);
   font-weight:600;font-size:.92rem;text-decoration:none;
   padding:.8rem 1.3rem;border-radius:999px;
@@ -1369,6 +1388,12 @@ body.com-barra .rodape{padding-bottom:6rem}
     transform:translateY(110%);
   }
   .barra-pedido.visivel{transform:none}
+  /* Espaço curto: tudo encolhe um pouco para o valor do pedido caber inteiro,
+     em vez de virar "2 itens · …" — é a informação que a pessoa confere. */
+  .barra-pedido{gap:.5rem;padding-inline:.75rem}
+  .barra-pedido__info strong{font-size:.9rem}
+  .barra-pedido__editar{padding:.5rem .6rem;font-size:.8rem;min-height:38px}
+  .barra-pedido__btn{padding:.75rem .9rem}
   .flutuante{right:.9rem;bottom:calc(.9rem + env(safe-area-inset-bottom));gap:.5rem}
   .atalho-cardapio{padding:.75rem 1.05rem;font-size:.88rem}
   body.com-barra .flutuante{bottom:calc(5.4rem + env(safe-area-inset-bottom))}
@@ -1383,10 +1408,21 @@ body.com-barra .rodape{padding-bottom:6rem}
   .hero__titulo{font-size:2.1rem}
   .item__foto{width:84px;height:84px}
   .grupo__nome{font-size:1.2rem}
-  .barra-pedido__btn{padding:.75rem .95rem;font-size:.82rem}
+  .barra-pedido__btn{padding:.75rem .8rem;font-size:.82rem}
+  .barra-pedido__editar{padding:.5rem .5rem;font-size:.78rem}
+  .barra-pedido{gap:.4rem;padding-inline:.6rem}
   .atalho-cardapio__texto{display:none}
   .atalho-cardapio{padding:.85rem}
   .hero__selos{gap:.35rem}
+}
+
+/* ── Telas muito estreitas (abaixo de 350px) ────── */
+@media (max-width:350px){
+  /* Não cabem os dois: o valor do pedido é o que a pessoa confere antes de
+     fechar, então ele fica e o atalho sai. A lista continua alcançável pelo
+     "Editar" do quadro de conferência e pelo atalho do cardápio. */
+  .barra-pedido__editar{display:none}
+  .barra-pedido__btn{margin-left:auto}
 }
 
 /* ── Telas baixas e deitadas ────────────────────── */
