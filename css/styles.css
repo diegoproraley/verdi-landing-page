@@ -261,7 +261,7 @@ p{margin:0 0 1.05rem}
   margin-bottom:2rem;
 }
 
-.hero__acoes{display:flex;flex-wrap:wrap;gap:.85rem;margin-bottom:2.2rem}
+.hero__acoes{display:flex;flex-wrap:wrap;gap:.85rem;justify-content:center;margin-bottom:2.2rem}
 
 .hero__selos{
   display:flex;flex-wrap:wrap;gap:.5rem .6rem;
@@ -491,25 +491,25 @@ p{margin:0 0 1.05rem}
 
 .grupo__itens{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
-  gap:0 1.6rem;
+  grid-template-columns:repeat(auto-fill,minmax(430px,1fr));
+  gap:0 1.8rem;
 }
 
 .item{
-  display:flex;align-items:center;gap:1.1rem;
-  padding:1rem 0;
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1.2rem 0;
   border-bottom:1px solid var(--linha);
 }
 .item:last-child{border-bottom:0}
 
 .item__foto{
-  width:84px;height:84px;flex:none;
-  border-radius:16px;object-fit:cover;
+  width:104px;height:104px;flex:none;
+  border-radius:18px;object-fit:cover;
   background:var(--creme);
 }
 .item__foto--vazia{display:grid;place-items:center}
 .item__foto--vazia svg{
-  width:34px;height:34px;
+  width:40px;height:40px;
   stroke:var(--verde-broto);stroke-width:1.5;fill:none;
   stroke-linecap:round;stroke-linejoin:round;
   opacity:.75;
@@ -517,16 +517,16 @@ p{margin:0 0 1.05rem}
 
 .item__txt{flex:1;min-width:0}
 .item__nome{
-  font-family:var(--corpo);font-weight:600;font-size:1.05rem;
+  font-family:var(--corpo);font-weight:600;font-size:1.14rem;
   line-height:1.25;color:var(--verde-noite);
-  margin:0 0 .18rem;
+  margin:0 0 .22rem;
 }
 .item__desc{
-  font-size:.88rem;color:var(--tinta-suave);
-  margin:0 0 .3rem;line-height:1.4;
+  font-size:.93rem;color:var(--tinta-suave);
+  margin:0 0 .36rem;line-height:1.42;
 }
 .item__preco{
-  font-family:var(--mono);font-size:.92rem;
+  font-family:var(--mono);font-size:1rem;
   color:var(--verde-mata);margin:0;
 }
 
@@ -1274,7 +1274,7 @@ body.com-barra .rodape{padding-bottom:6rem}
     box-shadow:0 8px 18px -16px rgba(34,64,10,.7);
   }
   .grupo__itens{grid-template-columns:1fr}
-  .item__foto{width:72px;height:72px}
+  .item__foto{width:88px;height:88px}
   .produtos__nota{margin-top:1.6rem}
 
   /* Alvos de toque com no mínimo 44px */
@@ -1358,7 +1358,7 @@ body.com-barra .rodape{padding-bottom:6rem}
   .env{width:calc(100% - 1.4rem)}
   .marca__logo{height:60px}
   .hero__titulo{font-size:2.1rem}
-  .item__foto{width:60px;height:60px}
+  .item__foto{width:72px;height:72px}
   .grupo__nome{font-size:1.2rem}
   .barra-pedido__btn{padding:.75rem .95rem;font-size:.82rem}
   .atalho-cardapio__texto{display:none}
