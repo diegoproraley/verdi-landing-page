@@ -80,8 +80,7 @@
       </p>
 
       <div class="hero__acoes">
-        <a class="btn btn--verde" href="#encomenda">Montar minha encomenda</a>
-        <a class="btn btn--vazado" href="#produtos">Ver o cardápio</a>
+        <a class="btn btn--verde" href="#produtos">Ver o cardápio</a>
       </div>
 
       <ul class="hero__selos">
@@ -183,17 +182,17 @@
 <!-- ══════════ PRODUTOS ══════════ -->
 <section class="secao secao--creme" id="produtos">
   <div class="env">
-    <header class="secao__topo revelar">
+    <header class="secao__topo">
       <p class="sobrenome">Cardápio</p>
       <h2 class="titulo">Escolha o que vai poupar seu tempo</h2>
       <p class="secao__lead">
-        <span id="cardapio-total">—</span> preparados sob encomenda. Toque em
+        <span id="cardapio-total">47 itens em 6 categorias</span> preparados sob encomenda. Toque em
         <strong>+</strong> para montar sua lista: ela vai somando o subtotal e
         vira a mensagem do WhatsApp no fim da página.
       </p>
     </header>
 
-    <div class="cardapio revelar">
+    <div class="cardapio">
       <div class="cardapio__abas" role="tablist" aria-label="Categorias do cardápio" id="cardapio-abas"></div>
       <div class="cardapio__lista" id="cardapio-lista"></div>
     </div>
@@ -336,23 +335,7 @@
 <section class="secao encomenda" id="encomenda">
   <div class="env">
 
-    <header class="secao__topo secao__topo--claro revelar">
-      <p class="sobrenome sobrenome--claro">Fechar pedido</p>
-      <h2 class="titulo titulo--claro">Dois passos e sua lista vira mensagem</h2>
-      <p class="secao__lead">
-        Nada é cobrado aqui: o subtotal é uma prévia, e o total com a taxa de
-        entrega a gente fecha na conversa.
-      </p>
-    </header>
-
-    <ol class="trilha" id="trilha">
-      <li class="trilha__passo ativo" data-passo="1">
-        <button type="button" data-ir="1"><span class="trilha__num">1</span> Sua lista</button>
-      </li>
-      <li class="trilha__passo" data-passo="2">
-        <button type="button" data-ir="2"><span class="trilha__num">2</span> Entrega e contato</button>
-      </li>
-    </ol>
+    <h2 class="oculto">Fechar pedido</h2>
 
     <!-- ── Passo 1: os itens ── -->
     <div class="painel" id="painel-1">
@@ -419,6 +402,11 @@
     <div class="painel painel--duplo" id="painel-2" hidden>
 
       <div class="painel__campos">
+        <p class="encomenda__aviso">
+          Nada é cobrado aqui: o subtotal é uma prévia, e o total com a taxa de
+          entrega a gente fecha na conversa.
+        </p>
+
         <div class="entrega-opcoes" role="group" aria-label="Escolha a entrega">
           <p class="campo__rotulo">Entrega desejada</p>
           <div class="entrega-opcoes__lista" id="entrega-opcoes"></div>
