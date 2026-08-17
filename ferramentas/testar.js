@@ -157,7 +157,7 @@ checar('avança para o passo 2', $('#painel-1').hidden && !$('#painel-2').hidden
 checar('trilha visual (dois passos) foi removida do HTML', !$('#trilha'));
 checar('título "Fechar pedido" continua acessível para leitor de tela',
   !!$('h2.oculto') && $('h2.oculto').textContent.trim() === 'Fechar pedido');
-checar('aviso "nada é cobrado" aparece no passo 2', /Nada é cobrado/.test($('.encomenda__aviso').textContent));
+checar('aviso "nada é cobrado" foi removido', !$('.encomenda__aviso') && !/Nada é cobrado/.test(doc.body.textContent));
 checar('resumo da lista no passo 2', /R\$/.test($('#resumo-itens').textContent), $('#resumo-itens').textContent);
 $('.conferencia__editar').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
 checar('botão editar volta ao passo 1', !$('#painel-1').hidden && $('#painel-2').hidden);
@@ -259,12 +259,35 @@ async function cicloDaBarra() {
     /^Enviar( pedido)? no WhatsApp$/.test(rotulo()), rotulo());
   checar('o link acompanha a lista nova', decodeURIComponent(btn.href) !== antes);
 
-  // apagar o endereço é o único jeito de voltar ao estado anterior
+  /*
+   * Estando no passo da entrega, "Fechar pedido" abriria a tela em que a
+   * pessoa já está. Então a barra se recolhe enquanto o endereço não serve,
+   * e volta quando vira "Enviar pedido no WhatsApp".
+   */
+  const barraAberta = () => !$('#barra-pedido').hidden &&
+    $('#barra-pedido').classList.contains('visivel');
+
   endereco.value = '';
   endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
   await esperar(900);
-  checar('endereço vazio volta para "Fechar pedido"',
-    rotulo() === 'Fechar pedido', rotulo());
+  checar('no passo da entrega, endereço vazio recolhe a barra em vez de mostrar "Fechar pedido"',
+    !barraAberta(), 'rótulo oculto: ' + rotulo());
+
+  // com endereço servível ela reaparece, já como botão de envio
+  endereco.value = 'Rua das Palmeiras, 120 — Centro';
+  endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
+  await esperar(900);
+  checar('endereço servível traz a barra de volta no passo da entrega', barraAberta());
+  checar('e ela volta como "Enviar pedido no WhatsApp"',
+    /^Enviar( pedido)? no WhatsApp$/.test(rotulo()), rotulo());
+
+  // no passo da lista o comportamento antigo continua: "Fechar pedido" faz sentido
+  window.irParaPasso(1, false);
+  endereco.value = '';
+  endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
+  await esperar(900);
+  checar('no passo da lista a barra continua aparecendo', barraAberta());
+  checar('e mostra "Fechar pedido"', rotulo() === 'Fechar pedido', rotulo());
   checar('botão volta a apontar para a seção', btn.getAttribute('href') === '#encomenda');
 
   // preenchido de novo: ao chegar ao passo 2, a troca leva 1s
@@ -288,12 +311,11 @@ async function cicloDaBarra() {
   checar('volta a "Enviar pedido no WhatsApp" 1s depois',
     /^Enviar( pedido)? no WhatsApp$/.test(rotulo()), rotulo());
 
-  // endereço incompleto invalida
+  // endereço incompleto no passo da entrega: barra se recolhe de novo
   endereco.value = 'Rua';
   endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
   await esperar(900);
-  checar('endereço incompleto volta para "Fechar pedido"',
-    rotulo() === 'Fechar pedido', rotulo());
+  checar('endereço incompleto recolhe a barra no passo da entrega', !barraAberta());
 
   endereco.value = 'Rua das Palmeiras, 120 — Centro';
   endereco.dispatchEvent(new window.Event('input', { bubbles: true }));
