@@ -154,11 +154,10 @@ checar('mensagem inclui o item', $('#previa-texto').textContent.includes('Pedido
 checar('abre no passo 1', !$('#painel-1').hidden && $('#painel-2').hidden);
 $('#ir-entrega').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
 checar('avança para o passo 2', $('#painel-1').hidden && !$('#painel-2').hidden);
-checar('trilha marca o passo 2', $('.trilha__passo.ativo').dataset.passo === '2');
-checar('passo 1 marcado como concluído', $$('.trilha__passo.feito').length === 1 &&
-  $('.trilha__passo.feito').dataset.passo === '1');
-checar('número do passo continua sendo um só', $('.trilha__passo.feito .trilha__num').textContent.trim() === '1',
-  'conteúdo: "' + $('.trilha__passo.feito .trilha__num').textContent.trim() + '"');
+checar('trilha visual (dois passos) foi removida do HTML', !$('#trilha'));
+checar('título "Fechar pedido" continua acessível para leitor de tela',
+  !!$('h2.oculto') && $('h2.oculto').textContent.trim() === 'Fechar pedido');
+checar('aviso "nada é cobrado" aparece no passo 2', /Nada é cobrado/.test($('.encomenda__aviso').textContent));
 checar('resumo da lista no passo 2', /R\$/.test($('#resumo-itens').textContent), $('#resumo-itens').textContent);
 $('.conferencia__editar').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
 checar('botão editar volta ao passo 1', !$('#painel-1').hidden && $('#painel-2').hidden);
@@ -172,6 +171,37 @@ checar('WhatsApp do rodapé é canal de ajuda',
   /^https:\/\/wa\.me\/\d{12,13}\?text=/.test($('#rodape-zap').href) &&
   decodeURIComponent($('#rodape-zap').href).includes('preciso de ajuda') &&
   !decodeURIComponent($('#rodape-zap').href).includes('*Pedido*'));
+
+// botão duplicado do hero foi removido — só sobra "Ver o cardápio"
+checar('hero tem um botão só, sem duplicar o atalho flutuante',
+  $$('.hero__acoes .btn').length === 1 && $('.hero__acoes .btn').textContent.trim() === 'Ver o cardápio');
+
+// atalho flutuante some assim que a lista deixa de estar vazia
+// (jsdom não implementa scrollTo/rolagem real; simula a posição direto na propriedade)
+Object.defineProperty(window, 'scrollY', { value: 900, configurable: true });
+window.atualizarFlutuante();
+checar('com item na lista, o atalho flutuante não aparece mesmo "rolado" a página',
+  !$('#flutuante').classList.contains('visivel'));
+
+// qualquer "Fazer pedido" da página leva direto ao passo 2 quando já há itens
+window.irParaPasso(1, false);
+checar('confirma que voltou ao passo 1 antes do teste', !$('#painel-1').hidden && $('#painel-2').hidden);
+$('.cabecalho__cta').dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+checar('"Fazer pedido" do cabeçalho pula direto para entrega e contato',
+  $('#painel-1').hidden && !$('#painel-2').hidden);
+
+// sem nenhum item escolhido, o mesmo botão manda para o cardápio, não para o passo 2
+$('#limpar').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+checar('lista vazia antes do próximo teste', $$('#carrinho-itens .carrinho__item').length === 0);
+
+window.atualizarFlutuante();
+checar('lista vazia e "rolado": o atalho flutuante volta a aparecer',
+  $('#flutuante').classList.contains('visivel'));
+
+window.irParaPasso(1, false);
+$('.cabecalho__cta').dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+checar('sem item na lista, "Fazer pedido" não abre o passo 2 (fica no passo 1)',
+  !$('#painel-1').hidden && $('#painel-2').hidden);
 
 // combos de um toque
 $$('#atalhos .atalho')[3].dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
@@ -275,8 +305,8 @@ async function cicloDaBarra() {
 }
 
 function irParaPasso2() {
-  $('.trilha__passo[data-passo="1"] button').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
-  $('.trilha__passo[data-passo="2"] button').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  window.irParaPasso(1, false);
+  window.irParaPasso(2, true);
 }
 
 /** A lista precisa sobreviver a um refresh — e resistir a dado estragado. */
@@ -347,13 +377,12 @@ async function envioLimpaTudo() {
   checar('barra some depois do envio',
     $('#barra-pedido').hidden || !$('#barra-pedido').classList.contains('visivel'));
   checar('confirmação aparece', !$('#painel-enviado').hidden);
-  checar('trilha some na confirmação', $('#trilha').hidden);
   checar('link de reenvio guarda o mesmo pedido',
     $('#reenviar').href === linkAntes && decodeURIComponent($('#reenviar').href).includes('*Pedido*'));
 
   $('#novo-pedido').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
   checar('"montar outro pedido" volta ao passo 1',
-    !$('#painel-1').hidden && $('#painel-enviado').hidden && !$('#trilha').hidden);
+    !$('#painel-1').hidden && $('#painel-enviado').hidden);
 }
 
 function fim() {
