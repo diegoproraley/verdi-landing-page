@@ -373,6 +373,18 @@ p{margin:0 0 1.05rem}
 .secao__lead{color:var(--tinta-suave);margin:0}
 .secao__topo--claro .secao__lead{color:rgba(255,255,255,.7)}
 
+/* Cabeçalho em duas colunas: título à esquerda, texto de apoio à direita.
+   Encurta a altura do bloco para o cardápio já entrar na mesma tela. */
+.secao__topo--lado{
+  max-width:none;text-align:left;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(1.4rem,4vw,3.2rem);align-items:end;
+  margin-bottom:clamp(1.6rem,3vw,2.4rem);
+}
+.secao__topo--lado .titulo{margin:0}
+.secao__topo--lado .sobrenome{margin:0 0 .5rem}
+.secao__topo--lado .secao__lead{max-width:52ch;padding-bottom:.2rem}
+
 /* ── Sobre ─────────────────────────────────────── */
 .sobre__grade{
   display:grid;grid-template-columns:.95fr 1.05fr;
@@ -1240,6 +1252,16 @@ body.com-barra .rodape{padding-bottom:6rem}
 
 /* ── Tablet e celular grande ────────────────────── */
 @media (max-width:760px){
+  /* Sem largura para duas colunas: empilha, mas continua compacto
+     e alinhado à esquerda, para o cardápio subir na tela. */
+  .secao__topo--lado{
+    grid-template-columns:1fr;
+    gap:.7rem;
+    margin-bottom:1.4rem;
+  }
+  .secao__topo--lado .titulo{font-size:clamp(1.7rem,1.1rem + 3.4vw,2.3rem)}
+  .secao__topo--lado .secao__lead{font-size:.94rem}
+
   /* Cardápio: uma coluna que rola com a página, sem caixa interna.
      As abas ficam grudadas embaixo do cabeçalho e acendem sozinhas. */
   .cardapio{padding:0;border:0;background:none;box-shadow:none;border-radius:0}
