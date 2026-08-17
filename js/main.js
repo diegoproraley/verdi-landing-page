@@ -557,7 +557,14 @@ function pintarBarra(total, destacar) {
   const botao = $('#barra-btn');
   if (!barra || !botao) return;
 
-  const tem = total > 0;
+  /*
+   * No passo da entrega, "Fechar pedido" não leva a lugar nenhum — a pessoa
+   * já está na tela que ele abriria. A barra some enquanto o botão estaria
+   * nesse estado e volta assim que o endereço serve, aí valendo como
+   * "Enviar pedido no WhatsApp" ao alcance do polegar no celular.
+   */
+  const inutilAqui = passoAtual === 2 && !enderecoOk;
+  const tem = total > 0 && !inutilAqui;
   document.body.classList.toggle('com-barra', tem);
 
   if (!tem) {
@@ -690,6 +697,9 @@ function irParaPasso(n, rolar) {
     agendarEndereco(enderecoValido() && !enderecoOk ? 1000 : 0);
   }
 
+  // a barra aparece ou some conforme o passo — quem decide é pintarBarra
+  pintarBarra(totalItens());
+
   if (rolar) {
     const secao = $('#encomenda');
     if (secao && typeof secao.scrollIntoView === 'function') {
@@ -700,17 +710,17 @@ function irParaPasso(n, rolar) {
 
 function ligarPassos() {
   /*
-   * Ir para o cardápio significa "vou mexer na lista". A barra volta a
-   * "Fechar pedido" para que a pessoa passe de novo pela conferência —
-   * o texto do endereço continua onde estava, só o estado do botão recua.
+   * Ir para o cardápio significa "vou mexer na lista": o painel volta a ser o
+   * da lista e a barra volta a "Fechar pedido", para a pessoa passar de novo
+   * pela conferência. O texto do endereço continua onde estava — só o estado
+   * do botão e o passo recuam.
    */
   document.addEventListener('click', function (e) {
     if (!e.target.closest('a[href="#produtos"]')) return;
     clearTimeout(relogioEndereco);
-    if (enderecoOk) {
-      enderecoOk = false;
-      pintarBarra(totalItens(), true);
-    }
+    enderecoOk = false;
+    if (passoAtual !== 1) irParaPasso(1, false);
+    pintarBarra(totalItens(), true);
   });
 
   document.addEventListener('click', function (e) {
