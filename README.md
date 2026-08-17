@@ -6,6 +6,11 @@ sem framework. É só publicar a pasta.
 ```
 verdi/
 ├── index.html
+├── 404.html             ← página de erro personalizada
+├── robots.txt
+├── sitemap.xml
+├── favicon.ico
+├── vercel.json          ← cache das fotos e headers de segurança
 ├── css/styles.css
 ├── js/
 │   ├── cardapio.js     ← os preços moram aqui
@@ -52,8 +57,9 @@ que olha o pacote e escreve para um canal sem atendimento é venda perdida.
 
 O Instagram do rodapé aponta para **@verdi.fv**.
 
-Esse número alimenta os três botões de WhatsApp da página (o do formulário,
-o flutuante e o do rodapé), todos já com a mensagem do pedido pronta.
+Esse número alimenta os dois botões de WhatsApp da página (o do formulário de
+pedido e o do rodapé), ambos já com a mensagem pronta — o do rodapé como ajuda
+e suporte, o do formulário com a lista e o endereço.
 
 ### b) Cardápio e preços — conferir
 
@@ -131,14 +137,7 @@ topo de `css/styles.css`:
 | `--verde-mata` | `#4A6A18` | derivado, para textos e links |
 | `--verde-broto` | `#A9BE55` | oliva das folhas do coração |
 | `--creme` | `#F9EDDD` | fundo da arte original |
-| `--coral` | `#E8695C` | coraçãozinho do lockup |
-| `--cenoura` | `#F15A07` | laranja da cenoura |
-
-### e) Depoimentos — trocar antes de publicar
-
-Os três depoimentos da seção "Quem já pede" são exemplos de escrita, não
-clientes reais. Substitua por frases de clientes de verdade antes de publicar —
-com autorização deles. Estão em `index.html`, na seção `id="depoimentos"`.
+| `--coral` | `#E8695C` | coraçãozinho do lockup, usado só em estados de urgência |
 
 ---
 
@@ -201,14 +200,14 @@ Settings → Domains no painel da Vercel.
 Está tudo derivado de uma regra só, escrita em `CONFIG.atendimento`:
 
 - **Área única: Porto Velho (RO).** A cidade está em `CONFIG.atendimento.cidade`
-  e aparece no topo, na regra de prazos, no campo de endereço, no rodapé e no
-  chatbot. Nenhum texto tem a cidade escrita à mão no JavaScript.
+  e aparece no topo, na regra de prazos, no campo de endereço e no rodapé.
+  Nenhum texto tem a cidade escrita à mão no JavaScript.
 - **Fuso fixo em UTC−4** (`CONFIG.atendimento.fusoHorario`). Todo o cálculo de
   prazo usa o relógio da loja, não o do aparelho de quem acessa — sem isso, um
   cliente em São Paulo às 16h30 veria o pedido como fechado, quando em Porto
   Velho ainda são 15h30. Quem acessa de outro fuso vê um aviso no quadro de
   prazos dizendo que horas são em Porto Velho.
-- **Só delivery**, sem retirada — dito no hero, nos passos, no rodapé e no chatbot.
+- **Só delivery**, sem retirada — dito no hero, nos passos e no rodapé.
 - **Taxa de entrega a combinar.** O formulário tem campo de endereço e avisa
   que a taxa depende do bairro; ela entra na mensagem do WhatsApp como
   "a combinar", para ninguém fechar pedido achando que já sabe o total.
@@ -217,10 +216,9 @@ Está tudo derivado de uma regra só, escrita em `CONFIG.atendimento`:
   seguinte. Não há entrega no fim de semana: o que for pedido de sexta à tarde
   em diante sai na terça, porque na segunda o prazo já fechou.
 
-O painel do topo, as opções de entrega do formulário, o quadro de prazos e as
-respostas do chatbot leem essa mesma regra — não há texto fixo com data em
-lugar nenhum. Mudou o horário? Mexa em `fimPedidos` e a página inteira
-acompanha.
+O painel do topo, as opções de entrega do formulário e o quadro de prazos leem
+essa mesma regra — não há texto fixo com data em lugar nenhum. Mudou o
+horário? Mexa em `fimPedidos` e a página inteira acompanha.
 
 ---
 
@@ -322,4 +320,4 @@ depois — o cardápio aparece, mas o formulário de pedido fica vazio.
 - Meta tags de compartilhamento (Open Graph) e favicon embutido
 - Carrinho, prazos e atendimento calculados no navegador, sem servidor e sem cookies
 - Lista guardada no navegador por 3 dias, revalidada contra o cardápio ao voltar
-- Chatbot fecha com Esc, tem foco visível e não bloqueia a leitura da página
+- `robots.txt`, `sitemap.xml` e página 404 personalizada
