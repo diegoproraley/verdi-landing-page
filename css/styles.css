@@ -868,8 +868,8 @@ p{margin:0 0 1.05rem}
   border-bottom:1px solid var(--linha);
 }
 .conferencia__rotulo{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--tinta-suave);margin:0 0 .2rem;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--verde-mata);font-weight:500;margin:0 0 .3rem;
 }
 .conferencia__valor{
   font-family:var(--display);font-weight:700;font-size:1.15rem;
@@ -885,6 +885,28 @@ p{margin:0 0 1.05rem}
 }
 .conferencia__editar:hover{background:var(--branco);border-color:var(--verde-broto)}
 
+.conferencia__itens-container{
+  padding:.8rem 0;
+  border-bottom:1px solid var(--linha);
+  margin-bottom:1rem;
+}
+.conferencia__itens{
+  list-style:none;margin:0;padding:0;
+}
+.conferencia__itens li{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  font-size:.9rem;line-height:1.4;
+  padding:.4rem 0;
+  color:var(--tinta);
+}
+.conferencia__itens li strong{
+  color:var(--verde-noite);font-weight:600;
+}
+.conferencia__itens-qtd{
+  font-size:.85rem;color:var(--tinta-suave);
+  margin-right:.5rem;flex:none;
+}
+
 .pisca{animation:pisca-aviso .9s ease}
 @keyframes pisca-aviso{
   0%,100%{background:var(--creme)}
@@ -894,9 +916,9 @@ p{margin:0 0 1.05rem}
 .campo{margin-bottom:1.2rem}
 .campo__rotulo{
   display:block;
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--verde-claro);
-  margin:0 0 .5rem;
+  font-family:var(--mono);font-size:.82rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--verde-mata);font-weight:500;
+  margin:0 0 .6rem;
 }
 /* Os campos têm fundo claro sobre o painel claro, com borda sutil para definição */
 .campo__entrada{
@@ -1102,8 +1124,8 @@ p{margin:0 0 1.05rem}
 
 .previa{margin:1.2rem 0 1.1rem}
 .previa__rotulo{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--tinta-suave);margin:0 0 .5rem;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--verde-mata);font-weight:500;margin:0 0 .6rem;
 }
 .previa__texto{
   font-family:var(--mono);font-size:.78rem;line-height:1.62;
