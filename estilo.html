@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verdi — Guia de Estilos</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --verde-noite: #22400A;
+      --verde-mata: #4A6A18;
+      --verde-broto: #A9BE55;
+      --verde-claro: #D9E3AE;
+      --creme: #F9EDDD;
+      --branco: #FFFFFF;
+      --coral: #E8695C;
+      --tinta: #2B3A1B;
+      --tinta-suave: #5E6B4C;
+
+      --cream-light: #FFFBF0;
+      --cream-light-border: #F5EFE0;
+      --cream-medium: #F9F5F0;
+      --cream-button: #F0EFE5;
+      --brown-light: #B5A898;
+      --brown-medium: #8B7B6E;
+      --brown-border: #D4C4B0;
+      --brown-border-dark: #E8DDD0;
+      --brown-light-bg: #F5F0E8;
+      --brown-light-bg-darker: #EAE5D8;
+      --brown-light-bg-darker-border: #C0AE9E;
+
+      --display: "Bricolage Grotesque", system-ui, sans-serif;
+      --corpo: "Instrument Sans", system-ui, sans-serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--branco);
+      color: var(--tinta);
+      font-family: var(--corpo);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(100% - 2.5rem, 1200px);
+      margin-inline: auto;
+      padding: 2rem 0;
+    }
+
+    header {
+      background: var(--verde-noite);
+      color: var(--branco);
+      padding: 3rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+    }
+
+    section {
+      margin-bottom: 4rem;
+    }
+
+    h2 {
+      font-family: var(--display);
+      color: var(--verde-noite);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--verde-broto);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-family: var(--display);
+      color: var(--verde-mata);
+      font-size: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .color-box {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .color-swatch {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--branco);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .color-info {
+      padding: 1rem;
+      background: #f5f5f5;
+    }
+
+    .color-name {
+      font-weight: 600;
+      color: var(--tinta);
+      margin: 0 0 0.3rem;
+    }
+
+    .color-value {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--tinta-suave);
+      margin: 0;
+    }
+
+    .color-usage {
+      font-size: 0.85rem;
+      color: var(--tinta-suave);
+      margin: 0.3rem 0 0;
+      font-style: italic;
+    }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .component-demo {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .demo-preview {
+      padding: 2rem;
+      background: var(--cream-light);
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .demo-label {
+      padding: 1rem;
+      background: #f5f5f5;
+      border-top: 1px solid #e0e0e0;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--tinta-suave);
+    }
+
+    .input-field {
+      width: 100%;
+      background: var(--branco);
+      border: 1px solid var(--brown-border-dark);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      color: var(--tinta);
+      font-family: var(--corpo);
+      font-size: 0.95rem;
+    }
+
+    .input-field::placeholder {
+      color: var(--brown-light);
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--verde-mata);
+      box-shadow: 0 0 0 3px rgba(169, 190, 85, 0.15);
+    }
+
+    .date-button {
+      background: var(--cream-medium);
+      border: 1px solid var(--brown-border-dark);
+      border-radius: 12px;
+      padding: 0.8rem;
+      color: var(--verde-noite);
+      font-family: var(--corpo);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .date-button:hover {
+      background: var(--brown-light-bg);
+      border-color: var(--brown-border);
+    }
+
+    .date-button.active {
+      background: var(--verde-broto);
+      border-color: var(--verde-broto);
+      color: var(--verde-noite);
+    }
+
+    .date-button.special {
+      background: var(--cream-button);
+      border-color: var(--brown-border);
+    }
+
+    .date-button.special:hover {
+      background: var(--brown-light-bg-darker);
+      border-color: var(--brown-light-bg-darker-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+
+    th, td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: var(--creme);
+      color: var(--verde-noite);
+      font-weight: 600;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .code-block {
+      background: #f5f5f5;
+      border-left: 4px solid var(--verde-broto);
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--tinta);
+      margin: 1rem 0;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--tinta-suave);
+      padding: 2rem 0;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 4rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--verde-broto);
+      color: var(--verde-noite);
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.4rem; }
+      .color-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌿 VERDI</h1>
+    <p>Guia de Estilos & Sistema de Design</p>
+  </header>
+
+  <div class="container">
+
+    <!-- PALETA DE CORES -->
+    <section>
+      <h2>🎨 Paleta de Cores</h2>
+
+      <h3>Verdes (Primários)</h3>
+      <div class="color-grid">
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--verde-noite);">Verde Noite</div>
+          <div class="color-info">
+            <p class="color-name">Verde Noite</p>
+            <p class="color-value">#22400A</p>
+            <p class="color-usage">Títulos, painéis escuros</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--verde-mata);">Verde Mata</div>
+          <div class="color-info">
+            <p class="color-name">Verde Mata</p>
+            <p class="color-value">#4A6A18</p>
+            <p class="color-usage">Textos e links primários</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--verde-broto);">Verde Broto</div>
+          <div class="color-info">
+            <p class="color-name">Verde Broto</p>
+            <p class="color-value">#A9BE55</p>
+            <p class="color-usage">Acentos, hover, foco</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--verde-claro);">Verde Claro</div>
+          <div class="color-info">
+            <p class="color-name">Verde Claro</p>
+            <p class="color-value">#D9E3AE</p>
+            <p class="color-usage">Rótulos, textos secundários</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Neutros (Tema Claro)</h3>
+      <div class="color-grid">
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--branco); border: 1px solid #ddd; color: var(--tinta);">Branco</div>
+          <div class="color-info">
+            <p class="color-name">Branco</p>
+            <p class="color-value">#FFFFFF</p>
+            <p class="color-usage">Inputs, cards, fundo</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--creme); color: var(--tinta);">Creme</div>
+          <div class="color-info">
+            <p class="color-name">Creme</p>
+            <p class="color-value">#F9EDDD</p>
+            <p class="color-usage">Fundo de seções</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--cream-light); color: var(--tinta); border: 1px solid #ddd;">Creme Claro</div>
+          <div class="color-info">
+            <p class="color-name">Creme Claro</p>
+            <p class="color-value">#FFFBF0</p>
+            <p class="color-usage">Formulário de entrega</p>
+          </div>
+        </div>
+
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--cream-medium); color: var(--tinta); border: 1px solid #ddd;">Creme Médio</div>
+          <div class="color-info">
+            <p class="color-name">Creme Médio</p>
+            <p class="color-value">#F9F5F0</p>
+            <p class="color-usage">Botões de data</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Destaque</h3>
+      <div class="color-grid">
+        <div class="color-box">
+          <div class="color-swatch" style="background-color: var(--coral);">Coral</div>
+          <div class="color-info">
+            <p class="color-name">Coral</p>
+            <p class="color-value">#E8695C</p>
+            <p class="color-usage">Apenas urgência/erro</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTES -->
+    <section>
+      <h2>⚙️ Componentes</h2>
+
+      <h3>Formulário de Entrega</h3>
+      <div class="components-grid">
+        <div class="component-demo">
+          <div class="demo-preview">
+            <input type="text" class="input-field" placeholder="Rua / Avenida">
+          </div>
+          <div class="demo-label">Input: Rua/Avenida</div>
+        </div>
+
+        <div class="component-demo">
+          <div class="demo-preview">
+            <input type="text" class="input-field" placeholder="Número">
+          </div>
+          <div class="demo-label">Input: Número</div>
+        </div>
+
+        <div class="component-demo">
+          <div class="demo-preview">
+            <input type="text" class="input-field" placeholder="Bairro">
+          </div>
+          <div class="demo-label">Input: Bairro</div>
+        </div>
+      </div>
+
+      <h3>Opções de Entrega</h3>
+      <div class="components-grid">
+        <div class="component-demo">
+          <div class="demo-preview">
+            <button class="date-button active">quarta, 19/08</button>
+          </div>
+          <div class="demo-label">Data Selecionada</div>
+        </div>
+
+        <div class="component-demo">
+          <div class="demo-preview">
+            <button class="date-button">quinta, 20/08</button>
+          </div>
+          <div class="demo-label">Data Padrão</div>
+        </div>
+
+        <div class="component-demo">
+          <div class="demo-preview">
+            <button class="date-button special">Escolher data</button>
+          </div>
+          <div class="demo-label">Seletor Expandido</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VARIÁVEIS CSS -->
+    <section>
+      <h2>🔧 Variáveis CSS</h2>
+
+      <h3>Como Usar</h3>
+      <p>Todas as cores e valores estão centralizados em variáveis CSS. Para usar em um componente:</p>
+
+      <div class="code-block">
+/* Exemplo: estilizar um botão */
+.meu-botao {
+  background: var(--verde-broto);
+  color: var(--verde-noite);
+  border: 1px solid var(--verde-broto);
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--raio);
+  transition: all var(--transicao);
+}
+
+.meu-botao:hover {
+  background: var(--verde-claro);
+}
+      </div>
+
+      <h3>Cores Disponíveis</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Variável</th>
+            <th>Valor</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--verde-noite</code></td>
+            <td>#22400A</td>
+            <td>Títulos, painéis escuros</td>
+          </tr>
+          <tr>
+            <td><code>--verde-mata</code></td>
+            <td>#4A6A18</td>
+            <td>Textos primários</td>
+          </tr>
+          <tr>
+            <td><code>--verde-broto</code></td>
+            <td>#A9BE55</td>
+            <td>Acentos, foco</td>
+          </tr>
+          <tr>
+            <td><code>--creme</code></td>
+            <td>#F9EDDD</td>
+            <td>Fundos de seção</td>
+          </tr>
+          <tr>
+            <td><code>--cream-light</code></td>
+            <td>#FFFBF0</td>
+            <td>Painel de formulário</td>
+          </tr>
+          <tr>
+            <td><code>--cream-medium</code></td>
+            <td>#F9F5F0</td>
+            <td>Botões de data</td>
+          </tr>
+          <tr>
+            <td><code>--branco</code></td>
+            <td>#FFFFFF</td>
+            <td>Inputs, cards</td>
+          </tr>
+          <tr>
+            <td><code>--tinta</code></td>
+            <td>#2B3A1B</td>
+            <td>Texto principal</td>
+          </tr>
+          <tr>
+            <td><code>--tinta-suave</code></td>
+            <td>#5E6B4C</td>
+            <td>Texto secundário</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Espaçamentos & Dimensões</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Variável</th>
+            <th>Valor</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--pad</code></td>
+            <td>1.8rem</td>
+            <td>Padding interno de cards</td>
+          </tr>
+          <tr>
+            <td><code>--barra</code></td>
+            <td>104px</td>
+            <td>Altura do cabeçalho</td>
+          </tr>
+          <tr>
+            <td><code>--env</code></td>
+            <td>1200px</td>
+            <td>Largura máxima</td>
+          </tr>
+          <tr>
+            <td><code>--raio</code></td>
+            <td>18px</td>
+            <td>Border radius padrão</td>
+          </tr>
+          <tr>
+            <td><code>--raio-g</code></td>
+            <td>32px</td>
+            <td>Border radius grande</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- PRINCÍPIOS -->
+    <section>
+      <h2>📋 Princípios de Design</h2>
+
+      <h3>1. Continuidade Visual</h3>
+      <p>O formulário de entrega e o quadro de resumo (itens selecionados) formam uma <strong>unidade visual contínua</strong>. Ambos usam a paleta creme/branco com detalhes em marrom, criando uma transição suave e fazendo parecer um único passo.</p>
+
+      <h3>2. Contraste & Legibilidade</h3>
+      <p>Texto escuro sobre fundo claro; fundo claro sobre escuro. Mínimo de ratio WCAA AA (4.5:1 para texto, 3:1 para elementos grandes).</p>
+
+      <h3>3. Hierarquia</h3>
+      <p>Tamanhos, cores e pesos de fonte definem a importância. Títulos grandes em verde-noite; textos secundários em tinta-suave.</p>
+
+      <h3>4. Modularidade</h3>
+      <p>Componentes reutilizáveis usando a nomenclatura BEM. Todas as cores via variáveis CSS, nunca hardcoded.</p>
+
+      <h3>5. Responsividade</h3>
+      <p>Design mobile-first. Usa <code>clamp()</code> para fontes fluidas e <code>min()</code> para largura responsiva sem media queries.</p>
+    </section>
+
+    <!-- COMO CONTRIBUIR -->
+    <section>
+      <h2>✏️ Como Contribuir</h2>
+
+      <h3>Adicionar Nova Cor</h3>
+      <ol>
+        <li>Defina no <code>:root</code> de <code>css/styles.css</code>:
+          <div class="code-block">--minha-cor: #XXXXXX; /* descrição breve */</div>
+        </li>
+        <li>Documente em <code>DESIGN_SYSTEM.md</code></li>
+        <li>Adicione preview em <code>estilo.html</code></li>
+        <li>Use em componentes: <code>color: var(--minha-cor);</code></li>
+      </ol>
+
+      <h3>Criar Novo Componente</h3>
+      <ol>
+        <li>Use nomes BEM: <code>.componente__elemento--modificador</code></li>
+        <li>Reutilize variáveis CSS sempre</li>
+        <li>Documente uso e contexto</li>
+        <li>Inclua preview aqui em <code>estilo.html</code></li>
+      </ol>
+
+      <h3>Atualizar Paleta</h3>
+      <p>Se uma cor mudar, atualize em:</p>
+      <ul>
+        <li>✅ <code>css/styles.css</code> (a variável)</li>
+        <li>✅ <code>DESIGN_SYSTEM.md</code> (documentação)</li>
+        <li>✅ <code>estilo.html</code> (preview visual)</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <footer>
+    <p><strong>Verdi Design System</strong><br>
+    Construído com cuidado. Mantido com propósito.<br>
+    Última atualização: 2026-08-18</p>
+  </footer>
+
+</body>
+</html>
