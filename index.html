@@ -410,21 +410,27 @@
 
         <div class="campo">
           <label class="campo__rotulo" for="cliente-nome">Seu nome</label>
-          <input class="campo__entrada" type="text" id="cliente-nome" placeholder="Como devemos te chamar?" autocomplete="name">
+          <input class="campo__entrada" type="text" id="cliente-nome" placeholder="Como devemos te chamar?" autocomplete="name" required aria-required="true">
         </div>
 
-        <div class="campo">
-          <label class="campo__rotulo" for="cliente-endereco">Endereço de entrega</label>
-          <textarea class="campo__entrada" id="cliente-endereco" rows="2" placeholder="Rua, número, bairro e um ponto de referência — Porto Velho (RO)" autocomplete="street-address"></textarea>
-          <p class="campo__dica">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-            <span>Entregamos <strong>só em Porto Velho (RO)</strong>. A taxa de entrega é <strong>a combinar</strong> — confirmamos o valor no WhatsApp assim que soubermos o seu bairro.</span>
-          </p>
-        </div>
+        <fieldset class="campo campo--grupo">
+          <legend class="campo__rotulo">Endereço de entrega</legend>
+          <div class="campo__grupo-itens">
+            <div class="campo__item">
+              <input class="campo__entrada" type="text" id="cliente-rua" placeholder="Rua / Avenida" autocomplete="street-address" required aria-required="true">
+            </div>
+            <div class="campo__item">
+              <input class="campo__entrada" type="text" id="cliente-numero" placeholder="Número" required aria-required="true">
+            </div>
+            <div class="campo__item">
+              <input class="campo__entrada" type="text" id="cliente-bairro" placeholder="Bairro" required aria-required="true">
+            </div>
+          </div>
+        </fieldset>
 
         <div class="campo">
           <label class="campo__rotulo" for="cliente-obs">Observações</label>
-          <textarea class="campo__entrada" id="cliente-obs" rows="2" placeholder="Ex.: cenoura em rodelas finas, entregar depois das 18h"></textarea>
+          <textarea class="campo__entrada" id="cliente-obs" rows="1" placeholder="Ex.: cenoura em rodelas finas, entregar depois das 18h"></textarea>
         </div>
       </div>
 
