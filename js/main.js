@@ -208,7 +208,7 @@ const $$ = sel => Array.from(document.querySelectorAll(sel));
 
 /* ── Painel do próximo lote ─────────────────────── */
 function pintarLote() {
-  entregasDisponiveis = proximasEntregas(4);
+  entregasDisponiveis = proximasEntregas(9);  // Carrega 9 para a seleção expandida
   if (!entregasDisponiveis.length) return;
 
   const prox = entregasDisponiveis[0];
@@ -567,10 +567,47 @@ function rolarAteVer(el) {
 
 /** Endereço mínimo aceitável: duas palavras e alguma substância. */
 function enderecoValido() {
-  const campo = $('#cliente-endereco');
-  if (!campo) return false;
-  const texto = (campo.value || '').trim();
-  return texto.length >= 10 && texto.split(/\s+/).length >= 2;
+  const rua = ($('#cliente-rua').value || '').trim();
+  const numero = ($('#cliente-numero').value || '').trim();
+  const bairro = ($('#cliente-bairro').value || '').trim();
+  return rua.length > 0 && numero.length > 0 && bairro.length > 0;
+}
+
+/**
+ * Valida todos os campos obrigatórios do formulário de entrega:
+ * - Entrega desejada (data)
+ * - Nome do cliente
+ * - Endereço completo (rua, número, bairro)
+ * Retorna o primeiro campo inválido ou null se tudo está ok.
+ */
+function validarCamposObrigatorios() {
+  // Verifica se uma entrega foi escolhida
+  const entregaSelecionada = document.querySelector('input[name="entrega"]:checked');
+  if (!entregaSelecionada) return { id: 'entrega-opcoes', tipo: 'entrega' };
+
+  // Verifica nome
+  const campoNome = $('#cliente-nome');
+  if (!campoNome || (campoNome.value || '').trim().length === 0) {
+    return { id: 'cliente-nome', tipo: 'nome', elemento: campoNome };
+  }
+
+  // Verifica endereço (rua, número, bairro)
+  const campoRua = $('#cliente-rua');
+  if (!campoRua || (campoRua.value || '').trim().length === 0) {
+    return { id: 'cliente-rua', tipo: 'rua', elemento: campoRua };
+  }
+
+  const campoNumero = $('#cliente-numero');
+  if (!campoNumero || (campoNumero.value || '').trim().length === 0) {
+    return { id: 'cliente-numero', tipo: 'numero', elemento: campoNumero };
+  }
+
+  const campoBairro = $('#cliente-bairro');
+  if (!campoBairro || (campoBairro.value || '').trim().length === 0) {
+    return { id: 'cliente-bairro', tipo: 'bairro', elemento: campoBairro };
+  }
+
+  return null;  // Tudo está ok
 }
 
 /**
@@ -793,25 +830,76 @@ function montarEntregas() {
   const caixa = $('#entrega-opcoes');
   if (!caixa || !entregasDisponiveis.length) return;
 
-  caixa.innerHTML = entregasDisponiveis.map(function (item, i) {
-    return `
+  // Renderiza as 2 primeiras datas + opção de escolher data
+  const html = [];
+
+  // Primeiras 2 datas (visíveis por padrão)
+  for (let i = 0; i < Math.min(2, entregasDisponiveis.length); i++) {
+    const item = entregasDisponiveis[i];
+    html.push(`
       <label class="entrega-op${i === 0 ? ' marcada' : ''}">
         <input type="radio" name="entrega" value="${i}"${i === 0 ? ' checked' : ''}>
         <strong>${rotuloEntrega(item)}</strong>
         <span>peça até ${item.rotuloLimite}</span>
-      </label>`;
-  }).join('');
+      </label>`);
+  }
+
+  // Opção "Escolher Data"
+  html.push(`
+    <label class="entrega-op entrega-op--escolher" id="entrega-escolher">
+      <input type="radio" name="entrega" value="-1">
+      <strong>Escolher data</strong>
+      <span>ver próximos 7 dias</span>
+    </label>`);
+
+  // Container para datas expandidas (inicialmente oculto)
+  html.push(`<div class="entrega-expandida" id="entrega-expandida" hidden></div>`);
+
+  caixa.innerHTML = html.join('');
 
   entregaEscolhida = entregasDisponiveis[0];
 
+  // Event listener para trocar de entrega
   caixa.addEventListener('change', function (e) {
     if (e.target.name !== 'entrega') return;
-    entregaEscolhida = entregasDisponiveis[Number(e.target.value)];
+
+    const index = Number(e.target.value);
+
+    // Se clicou em "Escolher data" (-1)
+    if (index === -1) {
+      const expandida = $('#entrega-expandida');
+      const jaAberta = !expandida.hidden;
+      expandida.hidden = jaAberta;  // toggle
+
+      if (!expandida.hidden) {
+        // Monta as datas expandidas (de índice 2 em diante)
+        const expandidoHtml = entregasDisponiveis.slice(2).map((item, i) => `
+          <label class="entrega-op entrega-op--expandida">
+            <input type="radio" name="entrega" value="${i + 2}">
+            <strong>${rotuloEntrega(item)}</strong>
+            <span>peça até ${item.rotuloLimite}</span>
+          </label>`).join('');
+        expandida.innerHTML = expandidoHtml;
+      }
+      return;
+    }
+
+    // Selecionou uma data normal
+    entregaEscolhida = entregasDisponiveis[index];
     const totalItens = Object.keys(carrinho).reduce((t, id) => t + carrinho[id], 0);
     pintarBarra(totalItens);
+
+    // Marca como selecionada
     $$('.entrega-op').forEach(function (l) {
       l.classList.toggle('marcada', l.contains(e.target));
     });
+
+    // Fecha o seletor expandido se estava aberto
+    const expandida = $('#entrega-expandida');
+    if (!expandida.hidden) {
+      expandida.hidden = true;
+    }
+
     pintarPrevia();
   });
 }
@@ -820,7 +908,10 @@ function montarEntregas() {
 function montarMensagem() {
   const ids = Object.keys(carrinho);
   const nome = ($('#cliente-nome').value || '').trim();
-  const endereco = ($('#cliente-endereco').value || '').trim();
+  const rua = ($('#cliente-rua').value || '').trim();
+  const numero = ($('#cliente-numero').value || '').trim();
+  const bairro = ($('#cliente-bairro').value || '').trim();
+  const endereco = [rua, numero, bairro].filter(Boolean).join(', ');
   const obs = ($('#cliente-obs').value || '').trim();
 
   const linhas = ['Olá, Verdi! Quero fazer uma encomenda.', ''];
@@ -851,6 +942,30 @@ function montarMensagem() {
   return linhas.join('\n');
 }
 
+function pintarItensConferencia() {
+  const caixa = $('#conferencia-itens');
+  if (!caixa) return;
+
+  const ids = Object.keys(carrinho);
+  if (!ids.length) {
+    $('#conferencia-itens-container').hidden = true;
+    return;
+  }
+
+  const html = ids.map(function (id) {
+    const p = ITENS[id];
+    if (!p) return '';
+    const q = carrinho[id];
+    return `<li>
+      <span><strong>${q}×</strong> ${p.nome}</span>
+      <span class="conferencia__itens-qtd">${fmtReal.format(p.preco * q)}</span>
+    </li>`;
+  }).join('');
+
+  caixa.innerHTML = html;
+  $('#conferencia-itens-container').hidden = false;
+}
+
 function pintarPrevia() {
   const texto = montarMensagem();
   const previa = $('#previa-texto');
@@ -860,6 +975,7 @@ function pintarPrevia() {
   const botao = $('#botao-zap');
   if (botao) botao.href = link;
 
+  pintarItensConferencia();
 }
 
 /* ── Atalhos ────────────────────────────────────── */
@@ -907,7 +1023,23 @@ function ligarInterface() {
 
   const enviar = $('#botao-zap');
   if (enviar) {
-    enviar.addEventListener('click', function () { marcarEnviado(enviar.href); });
+    enviar.addEventListener('click', function (e) {
+      const invalido = validarCamposObrigatorios();
+      if (invalido) {
+        e.preventDefault();
+        // Leva o foco ao primeiro campo obrigatório não preenchido
+        if (invalido.elemento) {
+          invalido.elemento.focus();
+          invalido.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (invalido.id === 'entrega-opcoes') {
+          // Scroll para as opções de entrega
+          const opcoes = document.getElementById('entrega-opcoes');
+          if (opcoes) opcoes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      marcarEnviado(enviar.href);
+    });
   }
 
   const btnNovo = $('#novo-pedido');
@@ -917,6 +1049,20 @@ function ligarInterface() {
   if (btnBarra) {
     btnBarra.addEventListener('click', function (e) {
       if (btnBarra.classList.contains('barra-pedido__btn--enviar')) {
+        const invalido = validarCamposObrigatorios();
+        if (invalido) {
+          e.preventDefault();
+          // Leva o foco ao primeiro campo obrigatório não preenchido
+          if (invalido.elemento) {
+            invalido.elemento.focus();
+            invalido.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else if (invalido.id === 'entrega-opcoes') {
+            // Scroll para as opções de entrega
+            const opcoes = document.getElementById('entrega-opcoes');
+            if (opcoes) opcoes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
         marcarEnviado(btnBarra.href);      // segue para o WhatsApp e limpa a lista
         return;
       }
@@ -925,8 +1071,11 @@ function ligarInterface() {
       irParaPasso(2, true);
       // já estava no passo 2 e ainda falta endereço: leva o cursor até ele
       if (jaEstava && !enderecoValido()) {
-        const campo = $('#cliente-endereco');
-        if (campo) campo.focus();
+        const campo = $('#cliente-rua');
+        if (campo) {
+          campo.focus();
+          campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     });
   }
@@ -941,12 +1090,11 @@ function ligarInterface() {
    * WhatsApp: o do formulário (#botao-zap, cuidado por pintarPrevia) e o da
    * barra fixa (#barra-btn, montado dentro de pintarBarra).
    *
-   * Sem o pintarBarra aqui, o link da barra congelava no instante em que o
-   * endereço passava a ser "válido" — bastavam duas palavras. Quem digitava
-   * "Avenida Calama" e só depois completava com número, bairro e referência
-   * mandava para a Verdi apenas "Avenida Calama".
+   * Agora com três campos de endereço (rua, número, bairro), é importante
+   * reescrever os links a cada entrada de dados para refletir o endereço
+   * completo de forma correta.
    */
-  ['#cliente-nome', '#cliente-endereco', '#cliente-obs'].forEach(function (sel) {
+  ['#cliente-nome', '#cliente-rua', '#cliente-numero', '#cliente-bairro', '#cliente-obs'].forEach(function (sel) {
     const campo = $(sel);
     if (campo) campo.addEventListener('input', function () {
       pintarPrevia();
@@ -954,11 +1102,14 @@ function ligarInterface() {
     });
   });
 
-  const endereco = $('#cliente-endereco');
-  if (endereco) {
-    endereco.addEventListener('input', function () { agendarEndereco(700); });
-    endereco.addEventListener('blur', function () { agendarEndereco(0); });
-  }
+  // Listeners para revalidação de endereço (com atraso de 700ms na digitação)
+  ['#cliente-rua', '#cliente-numero', '#cliente-bairro'].forEach(function (sel) {
+    const campo = $(sel);
+    if (campo) {
+      campo.addEventListener('input', function () { agendarEndereco(700); });
+      campo.addEventListener('blur', function () { agendarEndereco(0); });
+    }
+  });
 
   // Menu móvel
   const btn = $('#menu-btn');
