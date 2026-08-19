@@ -894,6 +894,19 @@ function montarEntregas() {
       l.classList.toggle('marcada', l.contains(e.target));
     });
 
+    // Se foi selecionada uma data do seletor expandido, atualiza o botão "Escolher data"
+    if (index >= 2) {
+      const botaoEscolher = $('#entrega-escolher');
+      if (botaoEscolher) {
+        const item = entregasDisponiveis[index];
+        botaoEscolher.innerHTML = `
+          <input type="radio" name="entrega" value="-1">
+          <strong>${rotuloEntrega(item)}</strong>
+          <span>peça até ${item.rotuloLimite}</span>
+        `;
+      }
+    }
+
     // Fecha o seletor expandido se estava aberto
     const expandida = $('#entrega-expandida');
     if (!expandida.hidden) {
@@ -968,8 +981,6 @@ function pintarItensConferencia() {
 
 function pintarPrevia() {
   const texto = montarMensagem();
-  const previa = $('#previa-texto');
-  if (previa) previa.textContent = texto;
 
   const link = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(texto);
   const botao = $('#botao-zap');
