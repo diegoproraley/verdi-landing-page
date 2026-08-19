@@ -916,9 +916,9 @@ p{margin:0 0 1.05rem}
 .campo{margin-bottom:1.2rem}
 .campo__rotulo{
   display:block;
-  font-family:var(--mono);font-size:.82rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--verde-mata);font-weight:500;
-  margin:0 0 .6rem;
+  font-family:var(--mono);font-size:.85rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--verde-noite);font-weight:600;
+  margin:0 0 .7rem;
 }
 /* Os campos têm fundo claro sobre o painel claro, com borda sutil para definição */
 .campo__entrada{
@@ -929,10 +929,15 @@ p{margin:0 0 1.05rem}
   padding:.9rem 1.05rem;
   color:var(--tinta);
   font-family:var(--corpo);font-size:.98rem;
-  resize:vertical;
+  resize:none;
   box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
   transition:border-color var(--transicao),background var(--transicao),
              box-shadow var(--transicao);
+}
+/* Textarea: altura reduzida sem barra de rolagem */
+.campo__entrada[rows]{
+  min-height:auto;
+  height:auto;
 }
 .campo__entrada::placeholder{color:#B5A898}
 .campo__entrada:hover{border-color:#D4C4B0}
@@ -1359,7 +1364,7 @@ body.com-barra .rodape{padding-bottom:6rem}
     box-shadow:0 30px 60px -34px rgba(0,0,0,.65);
   }
   .painel--duplo .painel__campos{
-    background:rgba(255,255,255,.06);
+    background:#FFFBF0;
     border:0;
     border-radius:0;
   }
