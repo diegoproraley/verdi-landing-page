@@ -140,15 +140,16 @@ function restanteTexto(ms) {
 
 /* ── Lista guardada no navegador ────────────────── */
 /*
- * O carrinho sobrevive a um refresh ou a uma volta no mesmo dia. Três cuidados:
+ * O carrinho sobrevive a um refresh, mas limpa se sair e voltar em 5+ minutos.
+ * Três cuidados:
  *   1. só entram ids que ainda existem no cardápio e não estão esgotados;
- *   2. a lista expira em 3 dias, para ninguém voltar com um pedido esquecido;
+ *   2. a lista expira em 5 minutos de inatividade para evitar pedidos esquecidos;
  *   3. preço nunca é guardado — ele é sempre lido do cardápio atual, então o
  *      subtotal reflete a tabela de hoje, não a de quando salvou.
  * Tudo protegido: navegação privada e cota cheia não podem quebrar a página.
  */
 const CHAVE_LISTA = 'verdi:lista:v1';
-const VALIDADE_LISTA_HORAS = 72;
+const VALIDADE_LISTA_MINUTOS = 5;
 let listaRestaurada = false;
 
 function salvarLista() {
@@ -184,8 +185,8 @@ function carregarLista() {
 
   if (!dados || dados.versao !== 1 || !dados.itens) { esquecerLista(); return; }
 
-  const horas = (Date.now() - Number(dados.em || 0)) / 36e5;
-  if (!(horas >= 0) || horas > VALIDADE_LISTA_HORAS) { esquecerLista(); return; }
+  const minutos = (Date.now() - Number(dados.em || 0)) / 60000;
+  if (!(minutos >= 0) || minutos > VALIDADE_LISTA_MINUTOS) { esquecerLista(); return; }
 
   Object.keys(dados.itens).forEach(function (id) {
     const qtd = Math.floor(Number(dados.itens[id]));
