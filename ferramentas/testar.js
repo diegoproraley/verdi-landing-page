@@ -101,8 +101,8 @@ console.log('\n═══ SEÇÕES PRESENTES NO HTML ═══');
 console.log('\n═══ CONTEÚDO GERADO POR JAVASCRIPT ═══');
 checar('abas do cardápio', $$('#cardapio-abas .aba').length >= 6, $$('#cardapio-abas .aba').length + ' abas');
 checar('seção de depoimentos removida', !$('#depoimentos'));
-checar('lista contínua com todos os itens', $$('#cardapio-lista .item').length === 47, $$('#cardapio-lista .item').length + ' itens na página');
-checar('grupos por categoria', $$('.cardapio__grupo').length === 6, $$('.cardapio__grupo').length + ' grupos');
+checar('lista contínua com todos os itens', $$('#cardapio-lista .item').length === 56, $$('#cardapio-lista .item').length + ' itens na página');
+checar('grupos por categoria', $$('.cardapio__grupo').length === 8, $$('.cardapio__grupo').length + ' grupos');
 checar('atalho flutuante para o cardápio', ($('#atalho-cardapio') || {}).getAttribute && $('#atalho-cardapio').getAttribute('href') === '#produtos');
 // o jsdom não aplica CSS externo, então a checagem é na folha de estilo
 const css = fs.readFileSync(path.join(RAIZ, 'css/styles.css'), 'utf8');
@@ -122,7 +122,7 @@ checar('painel da próxima entrega', ($('#lote-data') || {}).textContent !== '�
 checar('limite de pedido', ($('#lote-limite') || {}).textContent !== '—', ($('#lote-limite') || {}).textContent);
 checar('opções de entrega', $$('#entrega-opcoes .entrega-op').length > 0, $$('#entrega-opcoes .entrega-op').length + ' datas');
 checar('atalhos de combo', $$('#atalhos .atalho').length > 0, $$('#atalhos .atalho').length + ' combos');
-checar('prévia da mensagem', ($('#previa-texto') || {}).textContent.length > 40);
+checar('quadro de itens da conferência presente', !!$('#conferencia-itens-container') && !!$('#conferencia-itens'));
 checar('link do WhatsApp', ($('#botao-zap') || {}).href && $('#botao-zap').href.includes('wa.me'));
 checar('ano no rodapé', ($('#ano') || {}).textContent !== '2026' || true, ($('#ano') || {}).textContent);
 checar('linha ativa no quadro de prazos', $$('#quadro-corpo tr.ativa').length === 1);
