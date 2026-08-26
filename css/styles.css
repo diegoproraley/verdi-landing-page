@@ -327,14 +327,6 @@ p{margin:0 0 1.05rem}
 }
 .foto--grade__principal{grid-column:1/-1;grid-row:1}
 
-.foto--redonda{
-  position:absolute;left:-4%;bottom:12%;
-  width:44%;aspect-ratio:1;
-  border-radius:50%;
-  border:8px solid var(--branco);
-  box-shadow:0 22px 44px -22px rgba(34,64,10,.5);
-}
-
 /* Painel do próximo lote — elemento-assinatura */
 .lote{
   position:absolute;right:-2%;top:6%;
@@ -1390,7 +1382,6 @@ body.com-barra .rodape{padding-bottom:6rem}
   }
   .hero__visual{min-height:auto;margin-top:1rem}
   .foto--alta{aspect-ratio:5/4;border-radius:var(--raio-g) var(--raio-g) 120px 120px}
-  .foto--redonda{width:34%;left:2%;bottom:-6%}
   .lote{position:relative;right:auto;top:auto;width:100%;margin-top:1.2rem}
   .sobre__grade .foto--larga{order:-1}
   .passo::before{right:0}
@@ -1457,7 +1448,6 @@ body.com-barra .rodape{padding-bottom:6rem}
   .hero__acoes{flex-direction:column;align-items:stretch;margin-bottom:1.6rem}
   .hero__acoes .btn{width:100%;min-height:52px}
   .hero__selos li{font-size:.7rem;padding:.36rem .68rem}
-  .foto--redonda{display:none}
   .foto--alta{aspect-ratio:4/3;border-radius:var(--raio-g) var(--raio-g) 90px 90px}
 
   /* Seções mais compactas */
